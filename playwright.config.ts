@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { BASE_URL } from './pages';
+import { BASE_URL } from './targets';
 
 export default defineConfig({
   testDir: './tests',

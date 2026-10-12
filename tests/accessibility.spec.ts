@@ -1,11 +1,14 @@
-import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { PAGES } from '../pages';
+import { test, expect } from '../fixtures';
+import { PAGES } from '../targets';
 
 for (const { name, path } of PAGES) {
   test.describe(`Accessibility — ${name}`, () => {
+    test.beforeEach(async ({ basePage }) => {
+      await basePage.open(path);
+    });
+
     test('no WCAG 2.2 AA violations (axe)', async ({ page }) => {
-      await page.goto(path);
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
         .analyze();
@@ -17,7 +20,6 @@ for (const { name, path } of PAGES) {
     });
 
     test('every image has alt text', async ({ page }) => {
-      await page.goto(path);
       const missing = await page.locator('img:not([alt])').evaluateAll((imgs) =>
         imgs.map((img) => (img as HTMLImageElement).src),
       );

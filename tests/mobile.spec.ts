@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { PAGES } from '../pages';
+import { test, expect } from '../fixtures';
+import { PAGES } from '../targets';
 
 for (const { name, path } of PAGES) {
-  test(`Mobile — ${name}: no horizontal scroll`, async ({ page }) => {
-    await page.goto(path);
+  test(`Mobile — ${name}: no horizontal scroll`, async ({ basePage, page }) => {
+    await basePage.open(path);
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     );
