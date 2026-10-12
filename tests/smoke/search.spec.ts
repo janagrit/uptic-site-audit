@@ -24,12 +24,18 @@ test.describe('Smoke — Search', () => {
   });
 
   test('lists each result only once', async ({ searchPage }) => {
-    test.fail(true, 'Known site defect — FINDINGS #12: search results are duplicated');
     await searchPage.open('revenue');
 
     const titles = await searchPage.resultTitles.allInnerTexts();
 
     expect(titles).toEqual([...new Set(titles)]);
+  });
+
+  test('results show short excerpts, not full page content', async ({ searchPage }) => {
+    test.fail(true, 'Known site defect — FINDINGS #12: results template renders full post content');
+    await searchPage.open('revenue');
+
+    await expect(searchPage.resultFullContent).toHaveCount(0);
   });
 
   test('home page offers a search box', async ({ homePage, page }) => {
