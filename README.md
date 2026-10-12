@@ -18,6 +18,7 @@ npx playwright install chromium
 | `npm run test:a11y` | axe WCAG 2.2 AA scan, image alt text |
 | `npm run test:links` | broken links on each page |
 | `npm run test:mobile` | horizontal overflow on Pixel 7 + full-page screenshots in `screenshots/` |
+| `npm run test:visual` | home hero compared against the baseline in `tests/visual.spec.ts-snapshots/` (refresh with `test:visual:update`) |
 | `npm run report` | open the HTML report from the last run |
 
 Failing tests are findings, not bugs in the suite. Log them in [FINDINGS.md](FINDINGS.md).
