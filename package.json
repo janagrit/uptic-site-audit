@@ -1,0 +1,20 @@
+{
+  "name": "uptic-site-audit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automated audit of uptichospitality.com: SEO, accessibility, links, mobile layout",
+  "scripts": {
+    "test": "playwright test",
+    "test:seo": "playwright test tests/seo.spec.ts",
+    "test:a11y": "playwright test tests/accessibility.spec.ts",
+    "test:links": "playwright test tests/links.spec.ts",
+    "test:mobile": "playwright test tests/mobile.spec.ts",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}
