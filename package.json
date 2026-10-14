@@ -13,6 +13,7 @@
     "test:visual:update": "playwright test tests/visual.spec.ts --update-snapshots",
     "test:e2e": "playwright test tests/e2e",
     "test:api": "playwright test --project=api",
+    "test:ui": "playwright test --ui",
     "report": "playwright show-report"
   },
   "devDependencies": {

@@ -24,6 +24,7 @@ cp .env.example .env   # optional: BASE_URL defaults to production
 | `npm run test:visual` | home hero compared against the baseline in `tests/visual.spec.ts-snapshots/` (refresh with `test:visual:update`) |
 | `npm run test:e2e` | user flows with intercepted network: contact form, article view counter, API ↔ page consistency |
 | `npm run test:api` | public WordPress REST API (`wp/v2/posts`): schema, lookups, every post link loads |
+| `npm run test:ui` | Playwright UI mode: pick tests, watch them run, time-travel through steps and network calls. Narrow it with args, e.g. `npm run test:ui -- tests/e2e` or `npm run test:ui -- --project=api` |
 | `npm run report` | open the HTML report from the last run |
 
 Failing tests are findings, not bugs in the suite. Log them in [FINDINGS.md](FINDINGS.md).
