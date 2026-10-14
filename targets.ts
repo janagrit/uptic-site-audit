@@ -26,7 +26,7 @@ function readBaseUrl(): string {
 // Pages under audit. Add URLs here as you expand coverage.
 export const BASE_URL = readBaseUrl();
 
-export type AuditCheck = 'single-h1' | 'title-length' | 'meta-description';
+export type AuditCheck = 'single-h1' | 'title-length' | 'meta-description' | 'axe';
 
 export interface AuditPage {
   readonly name: string;
@@ -47,6 +47,7 @@ export const PAGES: readonly AuditPage[] = [
       'single-h1': 'FINDINGS #1',
       'meta-description': 'FINDINGS #2',
       'title-length': 'FINDINGS #10',
+      axe: 'FINDINGS #16',
     },
   },
 ];
