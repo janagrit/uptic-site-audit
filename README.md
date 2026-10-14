@@ -42,6 +42,8 @@ network/
 api/
   WpApi.ts          read-only client for /wp-json/wp/v2
   schemas.ts        zod schemas for API responses
+reporters/
+  summary-table.ts  results table printed after every run (Known defect = expected test.fail)
 tests/
   *.spec.ts         audits: SEO, a11y, links, mobile, visual
   smoke/            home, navigation, search

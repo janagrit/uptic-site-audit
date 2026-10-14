@@ -5,7 +5,7 @@ export default defineConfig({
   testDir: './tests',
   timeout: 60_000,
   retries: 1,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [['list'], ['./reporters/summary-table.ts'], ['html', { open: 'never' }]],
   use: {
     baseURL: BASE_URL,
     screenshot: 'only-on-failure',
