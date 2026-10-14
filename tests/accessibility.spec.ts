@@ -25,6 +25,12 @@ for (const target of PAGES) {
       expect(results.violations, summary.join('\n')).toEqual([]);
     });
 
+    test('BUG-R2 regression: audits run with reduced motion', async ({ page }) => {
+      const reduced = await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+      expect(reduced, 'axe would measure mid-fade text again').toBe(true);
+    });
+
     test('every image has alt text', async ({ page }) => {
       const missing = await page.locator('img:not([alt])').evaluateAll((imgs) =>
         imgs.map((img) => (img as HTMLImageElement).src),

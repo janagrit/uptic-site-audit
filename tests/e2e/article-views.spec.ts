@@ -8,6 +8,7 @@ import { SAMPLE_ARTICLE_SLUG } from '../../targets';
 // unless Global Privacy Control or Do Not Track is on. The clock is faked to avoid real waits.
 const VIEW_OK = { contentType: 'application/json', body: '{"success":true}' };
 const CLOCK_START = new Date('2026-01-01T09:00:00Z');
+const REAL_TIME_PROBE_MS = 1_000;
 
 test.describe('E2E — Article view counter', () => {
   test.beforeEach(async ({ page }) => {
@@ -88,6 +89,16 @@ test.describe('E2E — Article view counter', () => {
     await page.waitForLoadState('networkidle');
 
     expect(pageErrors, pageErrors.join('\n')).toEqual([]);
+  });
+
+  test('BUG-R1 regression: page time moves only when the test advances it', async ({ page, articlePage }) => {
+    await articlePage.openBySlug(SAMPLE_ARTICLE_SLUG);
+    const before = await page.evaluate(() => Date.now());
+
+    // Deliberate real-time wait: the bug was page time advancing on its own while the test ran.
+    await new Promise((resolve) => setTimeout(resolve, REAL_TIME_PROBE_MS));
+
+    expect(await page.evaluate(() => Date.now())).toBe(before);
   });
 
   test('write guard aborts the view when no test intercepts it', async ({ page, articlePage, blockedWrites }) => {

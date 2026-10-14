@@ -35,6 +35,8 @@ Playwright suite that audits the **live** site https://uptichospitality.com (Wor
 
 Flake check: `npx playwright test <spec> --retries=0 --repeat-each=10`. Config has `retries: 1`, so a flaky test still shows as Flaky in the summary table.
 
+**Regression baseline:** `baseline/results.json` holds every test's expected outcome; `npm run baseline:check` (CI) fails if a test is removed, skipped, newly marked known-defect or missing from it. Never edit the JSON by hand; after an intentional change run `npm run baseline:update` and commit it with the change.
+
 ## Project Structure
 
 ```

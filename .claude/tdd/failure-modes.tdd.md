@@ -51,3 +51,21 @@ real time; reproduced with a 6 s delay, then 60/60 under load). Commit `b014644`
 
 - Coverage % does not apply: the code under test is the live site.
 - Backlog FM-B1…B5 in the eval file; contact success confirmation still `fixme`.
+
+## Regression baseline (step 5)
+
+`baseline/results.json` records the expected outcome of all 79 tests (69 pass, 9 known-defect,
+1 skipped). `npm run baseline:check` (reporter `reporters/baseline.ts`) fails the run on drift.
+
+| Guard | RED evidence | GREEN |
+|-------|--------------|-------|
+| Test deleted | removed `returns an empty list for an unknown slug` → `removed  api › api/posts.spec.ts › …` | clean check: `79 tests match`, exit 0 |
+| Test skipped | `test.skip` on the 404 test → `pass → skipped` | ″ |
+| Failure hidden with `test.fail` | forced failure + `test.fail` on home CTA → `pass → known-defect` | ″ |
+| Drift exits non-zero | partial run in check mode → exit 1 | ″ |
+| BUG-R1 regression (clock ticking) | remove `pauseAt` → page time moved 1 016 ms in 1 s | pass |
+| BUG-R2 regression (axe mid-fade) | remove `reducedMotion` → `axe would measure mid-fade text again` | pass |
+| Links: network errors reported, max 6 at once | add an unresolvable host → `network error (… ENOTFOUND …)` | pass |
+
+The first `baseline:update` refused to write (run failed: every link returned 0 while the site was
+slow). That exposed the links test swallowing errors and bursting all requests at once; fixed above.
