@@ -7,10 +7,14 @@ import { SAMPLE_ARTICLE_SLUG } from '../../targets';
 // views.js (uptic-insights) POSTs one view to admin-ajax after 5 s of visibility,
 // unless Global Privacy Control or Do Not Track is on. The clock is faked to avoid real waits.
 const VIEW_OK = { contentType: 'application/json', body: '{"success":true}' };
+const CLOCK_START = new Date('2026-01-01T09:00:00Z');
 
 test.describe('E2E — Article view counter', () => {
   test.beforeEach(async ({ page }) => {
-    await page.clock.install();
+    // An installed clock still ticks in real time; on a slow machine the 5 s timer fired before
+    // the test's own runFor. Pausing makes page time move only when the test advances it.
+    await page.clock.install({ time: CLOCK_START });
+    await page.clock.pauseAt(CLOCK_START);
   });
 
   test('sends one view with the page id and token after 5 seconds', async ({ page, articlePage }) => {
