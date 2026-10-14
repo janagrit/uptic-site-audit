@@ -32,6 +32,7 @@ Start with #1, #2 and #10 (about 15 minutes in WordPress), then #5.
 | 10 | Article | `<title>` is 95 chars; Google truncates around 60 | Medium | Use an SEO title like "Independent Hotels Should Think Independently \| Uptic". Why it matters: a truncated title gets fewer clicks from search | open |
 | 11 | Home | No search box outside the results page | Low | Add a Search block to the header or footer, or drop search entirely | open |
 | 12 | Search | Results template renders full post content instead of excerpts | Medium | In the Search template, replace Post Content with Post Excerpt | open |
+| 16 | Article | Comparison table's "Branded Hotel" labels fail contrast: sage `#8D9B87` on ivory `#F6F2E7` at 11px = 2.62:1 (needs 4.5:1), 8 elements | Medium | Use the palette's `--muted` `#4E5E55` (6.14:1) for those labels | open |
 | 13 | Home | Glowing background and 01–04 strip appear to animate; also makes visual baselines flaky | Low | Confirm motion stops with OS "Reduce motion" on; mask the strip in the visual test | open |
 
 ## Content
@@ -61,6 +62,7 @@ All fixes are made in WordPress admin, not in this repo.
 - **#11 Search box:** Appearance → Editor → Patterns → Header → add a Search block (or remove the search feature if it isn't wanted).
 - **#12 Search results:** Appearance → Editor → Templates → Search Results → select Post Content inside the query loop → replace it with Post Excerpt.
 - **#13 Motion:** macOS System Settings → Accessibility → Display → Reduce motion, reload Home. If both elements stop, the site side is done.
+- **#16 Table label contrast:** in the comparison table's custom CSS, change the "Branded Hotel" label colour from `#8D9B87` (sage) to `#4E5E55` (the palette's `--muted`).
 - **Social links:** click each one by hand; the link checker skips them.
 
 **Content and conversion**
@@ -85,4 +87,4 @@ Run `npm test` and record new findings above.
 - Passing: canonical, Open Graph, JSON-LD, indexable, axe WCAG 2.2 AA scan, img alt attributes, links, mobile overflow — on both Home and Article.
 - Note: axe passed, yet the author photo was flagged as missing alt earlier — verify manually (it may be a CSS background or have an empty `alt=""`).
 - Social links (LinkedIn etc.) are skipped by the link checker because they block bots — check them by hand.
-- Home axe scan fails intermittently (~1 in 6 runs) on `color-contrast` in `#uptic-next`: text measured mid fade-in (e.g. #c1b292 on #f6f2e7, 1.86:1). Likely an animation artefact, not a real contrast issue — confirm with the final colours.
+- axe runs with reduced motion: the site fades sections in on scroll, which gave false contrast failures mid-fade and hid unrevealed text from axe. With motion off, the article's table labels fail for real (#16).
