@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures';
-import { ADMIN_AJAX, ARTICLE_VIEW_ACTION, formBody } from '../../network/endpoints';
+import { ADMIN_AJAX, ARTICLE_VIEW_ACTION, formBody, isAction } from '../../network/endpoints';
 import { interceptAction } from '../../network/mocks';
 import { VIEW_DELAY_MS } from '../../page-objects/ArticlePage';
 import { SAMPLE_ARTICLE_SLUG } from '../../targets';
@@ -56,6 +56,39 @@ test.describe('E2E — Article view counter', () => {
       expect(blockedWrites).toHaveLength(0);
     });
   }
+
+  test('sends no view from a background tab', async ({ page, articlePage, blockedWrites }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(document, 'visibilityState', { get: () => 'hidden' });
+      Object.defineProperty(document, 'hidden', { get: () => true });
+    });
+    const views = await interceptAction(page, ADMIN_AJAX, ARTICLE_VIEW_ACTION, VIEW_OK);
+    await articlePage.openBySlug(SAMPLE_ARTICLE_SLUG);
+
+    await page.clock.runFor(VIEW_DELAY_MS * 2);
+    await page.waitForLoadState('networkidle');
+
+    expect(views.requests).toHaveLength(0);
+    expect(blockedWrites).toHaveLength(0);
+  });
+
+  test('a failed view request raises no page error', async ({ page, articlePage, pageErrors }) => {
+    const attempts: string[] = [];
+    await page.route(ADMIN_AJAX, async (route) => {
+      if (!isAction(route.request(), ARTICLE_VIEW_ACTION)) {
+        return route.fallback();
+      }
+      attempts.push(route.request().url());
+      await route.abort('connectionreset');
+    });
+    await articlePage.openBySlug(SAMPLE_ARTICLE_SLUG);
+
+    await page.clock.runFor(VIEW_DELAY_MS);
+    await expect.poll(() => attempts.length).toBe(1);
+    await page.waitForLoadState('networkidle');
+
+    expect(pageErrors, pageErrors.join('\n')).toEqual([]);
+  });
 
   test('write guard aborts the view when no test intercepts it', async ({ page, articlePage, blockedWrites }) => {
     await articlePage.openBySlug(SAMPLE_ARTICLE_SLUG);

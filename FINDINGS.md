@@ -33,6 +33,9 @@ Start with #1, #2 and #10 (about 15 minutes in WordPress), then #5.
 | 11 | Home | No search box outside the results page | Low | Add a Search block to the header or footer, or drop search entirely | open |
 | 12 | Search | Results template renders full post content instead of excerpts | Medium | In the Search template, replace Post Content with Post Excerpt | open |
 | 16 | Article | Comparison table's "Branded Hotel" labels fail contrast: sage `#8D9B87` on ivory `#F6F2E7` at 11px = 2.62:1 (needs 4.5:1), 8 elements | Medium | Use the palette's `--muted` `#4E5E55` (6.14:1) for those labels | open |
+| 17 | Site | REST API lists user accounts publicly (`/wp-json/wp/v2/users`), exposing the admin login slug `tariqkhanoutlook-com` | High | Restrict the users endpoint to logged-in users (security plugin setting or a `rest_endpoints` filter), and change the author slug so it no longer derives from an email address | open |
+| 18 | Site | No baseline security headers: HSTS, `X-Content-Type-Options: nosniff`, framing protection | Medium | Add them at the host/CDN or via `.htaccess`: `Strict-Transport-Security: max-age=31536000`, `X-Content-Type-Options: nosniff`, `Content-Security-Policy: frame-ancestors 'self'` | open |
+| 19 | Site | Header and its navigation (desktop and mobile) are injected by JavaScript; with JS blocked or failing, only the footer links remain | Low | Render the header nav in the block template (Navigation block) and let the script only enhance it | open |
 | 13 | Home | Glowing background and 01–04 strip appear to animate; also makes visual baselines flaky | Low | Confirm motion stops with OS "Reduce motion" on; mask the strip in the visual test | open |
 
 ## Content
@@ -63,6 +66,9 @@ All fixes are made in WordPress admin, not in this repo.
 - **#12 Search results:** Appearance → Editor → Templates → Search Results → select Post Content inside the query loop → replace it with Post Excerpt.
 - **#13 Motion:** macOS System Settings → Accessibility → Display → Reduce motion, reload Home. If both elements stop, the site side is done.
 - **#16 Table label contrast:** in the comparison table's custom CSS, change the "Branded Hotel" label colour from `#8D9B87` (sage) to `#4E5E55` (the palette's `--muted`).
+- **#17 User enumeration:** with a security plugin (e.g. Solid Security, Wordfence) enable "disable REST API user listing", or add a small snippet that unsets `/wp/v2/users` for logged-out visitors. Then Users → Profile → change the nickname/slug so it is not an email address.
+- **#18 Security headers:** add the three headers in the hosting panel's header settings, or in `.htaccess` with `Header always set …`. Check with https://securityheaders.com afterwards.
+- **#19 Header without JS:** a developer task: move the nav markup from the header script into the theme's Header template part.
 - **Social links:** click each one by hand; the link checker skips them.
 
 **Content and conversion**

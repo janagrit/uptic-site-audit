@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ENV_FILE = resolve(__dirname, '.env');
-const PRODUCTION_URL = 'https://uptichospitality.com';
+export const PRODUCTION_URL = 'https://uptichospitality.com';
 
 if (existsSync(ENV_FILE)) {
   process.loadEnvFile(ENV_FILE);

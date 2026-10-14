@@ -84,6 +84,31 @@ test.describe('E2E — Contact form', () => {
     expect(inquiry.requests).toHaveLength(0);
   });
 
+  test('re-enables the button when the user comes back after a failed submit', async ({ contactPage }) => {
+    // After a server error the user presses Back and the browser restores the page from the
+    // back/forward cache, button still locked. Playwright disables that cache, so replay the
+    // events instead: a synthetic submit runs the site's handler without navigating, then a
+    // persisted pageshow is what a cache restore fires.
+    await contactPage.fill(INQUIRY);
+    await contactPage.form.evaluate((form) => form.dispatchEvent(new Event('submit', { cancelable: true })));
+    await expect(contactPage.submitButton).toBeDisabled();
+
+    await contactPage.form.evaluate(() => window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true })));
+
+    await expect(contactPage.submitButton).toBeEnabled();
+    await expect(contactPage.submitButton).toHaveText(/Request your free first look/);
+  });
+
+  test('keeps the spam honeypot out of sight and out of the tab order', async ({ contactPage }) => {
+    const trapWrapper = contactPage.form.locator('.cp-trap');
+
+    await contactPage.honeypot.scrollIntoViewIfNeeded();
+
+    await expect(contactPage.honeypot).not.toBeInViewport();
+    await expect(contactPage.honeypot).toHaveAttribute('tabindex', '-1');
+    await expect(trapWrapper).toHaveAttribute('aria-hidden', 'true');
+  });
+
   test('shows a confirmation after a successful submit', async () => {
     test.fixme(true, 'Needs the real success redirect (URL/params) from admin-post.php; capture it from one consented live submission, then mock it here.');
   });

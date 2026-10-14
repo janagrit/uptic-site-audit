@@ -31,6 +31,16 @@ test.describe('Smoke — Search', () => {
     expect(titles).toEqual([...new Set(titles)]);
   });
 
+  test('shows a script-like query as text instead of running it', async ({ searchPage, page }) => {
+    const payload = '"><img src=x id=xss-probe onerror="window.__xss=1">';
+
+    await searchPage.open(payload);
+
+    await expect(searchPage.heading).toContainText('<img src=x');
+    await expect(page.locator('#xss-probe')).toHaveCount(0);
+    expect(await page.evaluate(() => (window as { __xss?: number }).__xss)).toBeUndefined();
+  });
+
   test('results show short excerpts, not full page content', async ({ searchPage }) => {
     test.fail(true, 'Known site defect — FINDINGS #12: results template renders full post content');
     await searchPage.open('revenue');

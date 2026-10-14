@@ -20,6 +20,10 @@ export class WpApi {
     return postListSchema.parse(await response.json());
   }
 
+  async usersResponse(): Promise<APIResponse> {
+    return this.request.get(`${REST_ROOT}/users`);
+  }
+
   async postBySlug(slug: string): Promise<Post | undefined> {
     const [post] = await this.posts({ slug });
     return post;
