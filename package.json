@@ -11,6 +11,7 @@
     "test:mobile": "playwright test tests/mobile.spec.ts",
     "test:visual": "playwright test tests/visual.spec.ts",
     "test:visual:update": "playwright test tests/visual.spec.ts --update-snapshots",
+    "test:visual:update:linux": "docker run --rm --ipc=host -v \"$PWD\":/work -v /work/node_modules -w /work mcr.microsoft.com/playwright:v1.64.0-noble bash -c 'npm ci --silent && npx playwright test tests/visual.spec.ts --update-snapshots'",
     "test:e2e": "playwright test tests/e2e",
     "test:api": "playwright test --project=api",
     "test:ui": "playwright test --ui",

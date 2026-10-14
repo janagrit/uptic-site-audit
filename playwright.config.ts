@@ -5,6 +5,7 @@ export default defineConfig({
   testDir: './tests',
   timeout: 60_000,
   retries: 1,
+  forbidOnly: !!process.env.CI,
   reporter: [['list'], ['./reporters/summary-table.ts'], ['html', { open: 'never' }]],
   use: {
     baseURL: BASE_URL,

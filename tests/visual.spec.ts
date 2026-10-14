@@ -1,7 +1,7 @@
 import { test, expect } from '../fixtures';
 
-// Baselines live in tests/visual.spec.ts-snapshots/, one per OS (fonts render differently).
-// After an intentional site change, refresh them with: npm run test:visual:update
+// Baselines live in tests/visual.spec.ts-snapshots/, one per OS (fonts render differently): darwin locally, linux in CI.
+// After an intentional site change, refresh both: npm run test:visual:update and npm run test:visual:update:linux
 const MAX_DIFF_PIXEL_RATIO = 0.01;
 
 test.describe('Visual — Home', () => {

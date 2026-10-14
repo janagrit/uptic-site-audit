@@ -29,6 +29,20 @@ cp .env.example .env   # optional: BASE_URL defaults to production
 
 Failing tests are findings, not bugs in the suite. Log them in [FINDINGS.md](FINDINGS.md).
 
+## CI (GitHub Actions)
+
+[.github/workflows/site-audit.yml](.github/workflows/site-audit.yml) runs the full suite:
+
+- **daily at 06:00 UTC**, on every push to `main`, and on pull requests
+- **on demand**: Actions → Site audit → Run workflow, optionally with a different `base_url`
+- in the `mcr.microsoft.com/playwright:v1.64.0-noble` image (keep its version in sync with `@playwright/test`)
+
+The results table appears on the run page; the HTML report (and traces on failure) are attached as artifacts. GitHub emails you when a scheduled run fails.
+
+Target: the `base_url` input, else the `BASE_URL` repository variable (Settings → Secrets and variables → Actions → Variables), else production.
+
+**Visual baselines** are per OS: `-darwin.png` for local Macs, `-linux.png` for CI. After an intentional site change, refresh both: `npm run test:visual:update` and `npm run test:visual:update:linux` (needs Docker).
+
 ## Structure
 
 ```

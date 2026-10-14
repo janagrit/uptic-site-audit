@@ -1,3 +1,4 @@
+import { appendFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import type { FullConfig, FullResult, Reporter, Suite, TestCase } from '@playwright/test/reporter';
 
@@ -92,6 +93,33 @@ export default class SummaryTableReporter implements Reporter {
     if (failures.length > 0) {
       process.stdout.write(`${this.renderFailures(failures)}\n`);
     }
+
+    const stepSummary = process.env.GITHUB_STEP_SUMMARY;
+    if (stepSummary) {
+      appendFileSync(stepSummary, this.renderMarkdown(sorted, total, result, failures));
+    }
+  }
+
+  /** Same table as Markdown for the GitHub Actions run page. */
+  private renderMarkdown(rows: readonly Row[], total: Row, result: FullResult, failures: readonly Failure[]): string {
+    const icon = result.status === 'passed' ? '✅' : '❌';
+    const counts = (row: Row): string => COLUMNS.map(({ key }) => (row.counts[key] > 0 ? row.counts[key] : '·')).join(' | ');
+    const lines = [
+      `## ${icon} Site audit — ${result.status} (${seconds(result.duration)})`,
+      '',
+      `Target: ${process.env.BASE_URL ?? 'default'}`,
+      '',
+      `| Spec | ${COLUMNS.map((c) => c.label).join(' | ')} | Time |`,
+      `|---|${COLUMNS.map(() => '---:').join('|')}|---:|`,
+      ...rows.map((row) => `| \`${row.group}\` | ${counts(row)} | ${seconds(row.durationMs)} |`),
+      `| **Total** | ${counts(total)} | ${seconds(total.durationMs)} |`,
+      '',
+      ...(total.counts.known > 0 ? [`${total.counts.known} known site defect(s) are tracked in FINDINGS.md.`, ''] : []),
+      ...(failures.length > 0
+        ? ['### Failures', '', ...failures.map((f) => `- **${f.title}** (\`${f.group}\`): ${f.error.replace(/\|/g, '\\|')}`), '']
+        : []),
+    ];
+    return `${lines.join('\n')}\n`;
   }
 
   private renderTable(rows: readonly Row[], total: Row): string {
