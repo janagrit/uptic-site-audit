@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import type { FullConfig, FullResult, Reporter, Suite, TestCase } from '@playwright/test/reporter';
+import { BASE_URL, PRODUCTION_URL } from '../targets';
 
 /**
  * Regression baseline: the expected outcome of every test, committed in baseline/results.json.
@@ -9,6 +10,9 @@ import type { FullConfig, FullResult, Reporter, Suite, TestCase } from '@playwri
  *                  defect, or not yet in the baseline (CI runs this)
  * BASELINE=update  rewrite the baseline from this run (only after an intentional change)
  * unset            reporter does nothing
+ *
+ * The baseline describes production and the full suite: other targets are skipped (their known
+ * defects differ), and a partial run (file or -g filter) reports every unselected test as removed.
  *
  * Guards against "fixing" a red test by deleting it, skipping it or wrapping it in test.fail.
  */
@@ -58,6 +62,10 @@ export default class BaselineReporter implements Reporter {
 
   async onEnd(result: FullResult): Promise<{ status: FullResult['status'] } | void> {
     if (MODE !== 'check' && MODE !== 'update') return;
+    if (BASE_URL !== PRODUCTION_URL) {
+      process.stdout.write(`\nBaseline ${MODE} skipped: it describes ${PRODUCTION_URL}, this run targets ${BASE_URL}.\n`);
+      return;
+    }
     const outcomes = this.current();
 
     if (MODE === 'update') {
