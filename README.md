@@ -7,7 +7,10 @@ Automated checks and a running list of recommendations for <https://uptichospita
 ```bash
 npm install
 npx playwright install chromium
+cp .env.example .env   # optional: BASE_URL defaults to production
 ```
+
+`BASE_URL` in `.env` picks the site under test (e.g. a staging copy). A `BASE_URL` set in the shell wins over `.env`: `BASE_URL=https://staging.example.com npm test`.
 
 ## Run
 
@@ -19,10 +22,40 @@ npx playwright install chromium
 | `npm run test:links` | broken links on each page |
 | `npm run test:mobile` | horizontal overflow on Pixel 7 + full-page screenshots in `screenshots/` |
 | `npm run test:visual` | home hero compared against the baseline in `tests/visual.spec.ts-snapshots/` (refresh with `test:visual:update`) |
+| `npm run test:e2e` | user flows with intercepted network: contact form, article view counter, API ↔ page consistency |
+| `npm run test:api` | public WordPress REST API (`wp/v2/posts`): schema, lookups, every post link loads |
 | `npm run report` | open the HTML report from the last run |
 
 Failing tests are findings, not bugs in the suite. Log them in [FINDINGS.md](FINDINGS.md).
 
+## Structure
+
+```
+targets.ts          pages under audit, known defects, sample article
+fixtures.ts         test fixtures: page objects, wpApi, pageErrors, write guard (auto)
+page-objects/       one class per page or shared component
+network/
+  endpoints.ts      write endpoints (admin-post, admin-ajax) and form-body helpers
+  writeGuard.ts     aborts every write to production unless a test intercepts it
+  mocks.ts          interceptAction(): record + fulfill a specific POST action
+api/
+  WpApi.ts          read-only client for /wp-json/wp/v2
+  schemas.ts        zod schemas for API responses
+tests/
+  *.spec.ts         audits: SEO, a11y, links, mobile, visual
+  smoke/            home, navigation, search
+  e2e/              flows with network interception
+  api/              REST API (own browserless project)
+```
+
+## Testing against production
+
+The suite runs against the live site, so it must never write to it:
+
+- **Write guard** — an auto fixture aborts every non-GET request to `admin-post.php`, `admin-ajax.php`, `wp-comments-post.php` and `xmlrpc.php`. Aborted requests are exposed as `blockedWrites`.
+- **To test a write**, intercept it: `interceptAction(page, ADMIN_POST, CONTACT_ACTION)` fulfills the request in the browser and records it for assertions. Nothing reaches the server.
+- `WpApi` is read-only by design. Don't add write methods.
+
 ## Add a page
 
-Append it to `PAGES` in [pages.ts](pages.ts). Every check runs against every listed page.
+Append it to `PAGES` in [targets.ts](targets.ts). Every audit check runs against every listed page.

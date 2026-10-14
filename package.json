@@ -11,12 +11,15 @@
     "test:mobile": "playwright test tests/mobile.spec.ts",
     "test:visual": "playwright test tests/visual.spec.ts",
     "test:visual:update": "playwright test tests/visual.spec.ts --update-snapshots",
+    "test:e2e": "playwright test tests/e2e",
+    "test:api": "playwright test --project=api",
     "report": "playwright show-report"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.64.0",
     "@types/node": "^26.6.5",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "zod": "^3.25.76"
   }
 }
