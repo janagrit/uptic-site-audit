@@ -92,7 +92,7 @@ All fixes are made in WordPress admin, not in this repo.
 
 Run `npm test` and record new findings above.
 
-**Last run: 2026-10-12** — 19 passed, 3 failed (all on the article page; findings #1, #2, #10).
+**Last run: 2026-10-16** — 80 tests: 70 passed, 10 known site defects still present (#1, #2, #10, #11, #12, #16, #17, #18, #19, #20), none fixed, no new failures, baseline check passed.
 
 - Passing: canonical, Open Graph, JSON-LD, indexable, axe WCAG 2.2 AA scan, img alt attributes, links, mobile overflow — on both Home and Article.
 - Note: axe passed, yet the author photo was flagged as missing alt earlier — verify manually (it may be a CSS background or have an empty `alt=""`).
