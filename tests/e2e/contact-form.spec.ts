@@ -13,6 +13,23 @@ const INQUIRY: Inquiry = {
   message: 'Automated test inquiry. Intercepted by the test suite and never delivered.',
 };
 
+const CONTACT_PATH = '/contact/';
+const SEE_OTHER = 303;
+
+// admin-post.php answers with a 303 to `/contact/?uptic_status=<status>#uptic-contact-page`,
+// and the page renders the message for that status. Captured from one consented live submit
+// and GETs of each status (2026-10-15).
+const STATUS_MESSAGES = {
+  sent: 'Thank you. Your inquiry has been accepted for sending. We look forward to learning about your hotel.',
+  expired: 'This form has expired. Refresh the page and try again.',
+  invalid: 'Please complete the required fields with a valid email address and try again.',
+  failed: 'Your inquiry could not be sent. Please email hello@uptichospitality.com directly.',
+} as const;
+
+function statusPath(status: keyof typeof STATUS_MESSAGES): string {
+  return `${CONTACT_PATH}?uptic_status=${status}#uptic-contact-page`;
+}
+
 test.describe('E2E — Contact form', () => {
   test.beforeEach(async ({ contactPage }) => {
     await contactPage.open();
@@ -109,7 +126,28 @@ test.describe('E2E — Contact form', () => {
     await expect(trapWrapper).toHaveAttribute('aria-hidden', 'true');
   });
 
-  test('shows a confirmation after a successful submit', async () => {
-    test.fixme(true, 'Needs the real success redirect (URL/params) from admin-post.php; capture it from one consented live submission, then mock it here.');
+  test('shows a confirmation after a successful submit', async ({ page, contactPage }) => {
+    // Replays the handler's real reply: a 303 back to the form, which renders the matching message.
+    await interceptAction(page, ADMIN_POST, CONTACT_ACTION, {
+      status: SEE_OTHER,
+      headers: { location: new URL(statusPath('sent'), page.url()).href },
+    });
+
+    await contactPage.fill(INQUIRY);
+    await contactPage.submit();
+
+    await expect(page).toHaveURL(/[?&]uptic_status=sent\b/);
+    await expect(contactPage.status).toHaveText(STATUS_MESSAGES.sent);
+  });
+
+  test('serves the form from outside the page cache, so its nonce stays valid', async ({ request }) => {
+    test.fail(true, 'Known site defect — FINDINGS #20: /contact/ is served from the page cache with an expired nonce, so every submit returns "This form has expired"');
+    // The first request may be the one that fills the cache; the second shows what visitors get.
+    await request.get(CONTACT_PATH);
+    const headers = (await request.get(CONTACT_PATH)).headers();
+
+    const cacheState = `x-litespeed-cache=${headers['x-litespeed-cache']}, age=${headers.age}`;
+    expect(headers['x-litespeed-cache'], cacheState).not.toBe('hit');
+    expect(headers.age, cacheState).toBeUndefined();
   });
 });

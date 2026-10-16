@@ -5,6 +5,8 @@ export interface FulfillOptions {
   readonly status?: number;
   readonly body?: string;
   readonly contentType?: string;
+  /** e.g. `{ location }` with a 3xx status to replay the server's redirect. */
+  readonly headers?: Readonly<Record<string, string>>;
 }
 
 export interface Interception {
@@ -31,6 +33,7 @@ export async function interceptAction(
     await route.fulfill({
       status: options.status ?? 200,
       contentType: options.contentType ?? 'text/html; charset=UTF-8',
+      headers: options.headers,
       body: options.body ?? '<!doctype html><title>intercepted</title><p>intercepted by test</p>',
     });
   });
