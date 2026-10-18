@@ -1,8 +1,9 @@
 import { appendFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import type { FullConfig, FullResult, Reporter, Suite, TestCase } from '@playwright/test/reporter';
+import { BUG_ANNOTATION, BUG_TAG } from '../knownBugs';
 
-type Bucket = 'passed' | 'failed' | 'flaky' | 'skipped' | 'known';
+type Bucket = 'passed' | 'failed' | 'flaky' | 'skipped' | 'bug';
 
 interface Row {
   readonly group: string;
@@ -16,11 +17,17 @@ interface Failure {
   readonly error: string;
 }
 
+interface BugResult {
+  readonly group: string;
+  readonly title: string;
+  readonly finding: string;
+}
+
 const COLUMNS: readonly { key: Bucket; label: string; color: string }[] = [
   { key: 'passed', label: 'Passed', color: '32' },
   { key: 'failed', label: 'Failed', color: '31' },
   { key: 'flaky', label: 'Flaky', color: '33' },
-  { key: 'known', label: 'Known defect', color: '35' },
+  { key: 'bug', label: 'Open bug', color: '35' },
   { key: 'skipped', label: 'Skipped', color: '90' },
 ];
 
@@ -33,13 +40,18 @@ const pad = (text: string, width: number, alignRight: boolean): string => {
 };
 const seconds = (ms: number): string => `${(ms / 1000).toFixed(1)}s`;
 
-/** Maps Playwright's outcome to a table column. Expected failures (`test.fail`) are known site defects. */
+const isBug = (test: TestCase): boolean => test.tags.includes(BUG_TAG);
+const findingOf = (test: TestCase): string =>
+  test.annotations.find((a) => a.type === BUG_ANNOTATION)?.description ?? 'no FINDINGS reference';
+const emptyCounts = (): Record<Bucket, number> => ({ passed: 0, failed: 0, flaky: 0, skipped: 0, bug: 0 });
+
+/** Maps Playwright's outcome to a table column. A failing `@bug` test is an open site defect, not a new failure. */
 function bucketOf(test: TestCase): Bucket {
   const outcome = test.outcome();
   if (outcome === 'skipped') return 'skipped';
   if (outcome === 'flaky') return 'flaky';
-  if (outcome === 'unexpected') return 'failed';
-  return test.expectedStatus === 'failed' ? 'known' : 'passed';
+  if (outcome === 'unexpected') return isBug(test) ? 'bug' : 'failed';
+  return 'passed';
 }
 
 /** Prints a per-file results table, plus failure details, after the run. */
@@ -60,27 +72,32 @@ export default class SummaryTableReporter implements Reporter {
     if (!this.rootSuite) return;
     const rows = new Map<string, Row>();
     const failures: Failure[] = [];
+    const openBugs: BugResult[] = [];
+    const fixedBugs: BugResult[] = [];
 
     for (const test of this.rootSuite.allTests()) {
       const project = test.parent.project()?.name ?? '';
       const group = `${relative(this.rootDir, test.location.file)}${project ? ` [${project}]` : ''}`;
-      const row = rows.get(group) ?? { group, counts: { passed: 0, failed: 0, flaky: 0, skipped: 0, known: 0 }, durationMs: 0 };
+      const row = rows.get(group) ?? { group, counts: emptyCounts(), durationMs: 0 };
       const bucket = bucketOf(test);
       row.counts[bucket] += 1;
       row.durationMs += test.results.reduce((sum, r) => sum + r.duration, 0);
       rows.set(group, row);
 
+      const title = test.titlePath().slice(3).join(' › ');
+      if (bucket === 'bug') openBugs.push({ group, title, finding: findingOf(test) });
+      if (bucket === 'passed' && isBug(test)) fixedBugs.push({ group, title, finding: findingOf(test) });
       if (bucket === 'failed') {
         const last = test.results.at(-1);
         const error = last?.error?.message?.split('\n').find((line) => line.trim()) ?? 'no error message';
-        failures.push({ group, title: test.titlePath().slice(3).join(' › '), error: error.replace(/\x1b\[[0-9;]*m/g, '') });
+        failures.push({ group, title, error: error.replace(/\x1b\[[0-9;]*m/g, '') });
       }
     }
 
     const sorted = [...rows.values()].sort((a, b) => a.group.localeCompare(b.group));
     const total: Row = {
       group: 'Total',
-      counts: { passed: 0, failed: 0, flaky: 0, skipped: 0, known: 0 },
+      counts: emptyCounts(),
       durationMs: 0,
     };
     for (const row of sorted) {
@@ -90,18 +107,33 @@ export default class SummaryTableReporter implements Reporter {
 
     process.stdout.write(`\n${this.renderTable(sorted, total)}\n`);
     process.stdout.write(`${this.renderStatus(result, total)}\n`);
+    if (openBugs.length > 0) {
+      process.stdout.write(`${this.renderBugs('Open bugs (FINDINGS.md)', '35', openBugs)}\n`);
+    }
+    if (fixedBugs.length > 0) {
+      process.stdout.write(`${this.renderBugs('Fixed on the site: remove @bug and mark the finding fixed', '32', fixedBugs)}\n`);
+    }
     if (failures.length > 0) {
       process.stdout.write(`${this.renderFailures(failures)}\n`);
     }
 
     const stepSummary = process.env.GITHUB_STEP_SUMMARY;
     if (stepSummary) {
-      appendFileSync(stepSummary, this.renderMarkdown(sorted, total, result, failures));
+      appendFileSync(stepSummary, this.renderMarkdown(sorted, total, result, failures, openBugs, fixedBugs));
     }
   }
 
   /** Same table as Markdown for the GitHub Actions run page. */
-  private renderMarkdown(rows: readonly Row[], total: Row, result: FullResult, failures: readonly Failure[]): string {
+  private renderMarkdown(
+    rows: readonly Row[],
+    total: Row,
+    result: FullResult,
+    failures: readonly Failure[],
+    openBugs: readonly BugResult[],
+    fixedBugs: readonly BugResult[],
+  ): string {
+    const bugLines = (heading: string, bugs: readonly BugResult[]): string[] =>
+      bugs.length > 0 ? [`### ${heading}`, '', ...bugs.map((b) => `- **${b.title}** (\`${b.group}\`): ${b.finding.replace(/\|/g, '\\|')}`), ''] : [];
     const icon = result.status === 'passed' ? '✅' : '❌';
     const counts = (row: Row): string => COLUMNS.map(({ key }) => (row.counts[key] > 0 ? row.counts[key] : '·')).join(' | ');
     const lines = [
@@ -114,7 +146,10 @@ export default class SummaryTableReporter implements Reporter {
       ...rows.map((row) => `| \`${row.group}\` | ${counts(row)} | ${seconds(row.durationMs)} |`),
       `| **Total** | ${counts(total)} | ${seconds(total.durationMs)} |`,
       '',
-      ...(total.counts.known > 0 ? [`${total.counts.known} known site defect(s) are tracked in FINDINGS.md.`, ''] : []),
+      `${this.verdict(total)}`,
+      '',
+      ...bugLines('Open bugs (FINDINGS.md)', openBugs),
+      ...bugLines('Fixed on the site: remove @bug and mark the finding fixed', fixedBugs),
       ...(failures.length > 0
         ? ['### Failures', '', ...failures.map((f) => `- **${f.title}** (\`${f.group}\`): ${f.error.replace(/\|/g, '\\|')}`), '']
         : []),
@@ -152,8 +187,18 @@ export default class SummaryTableReporter implements Reporter {
   private renderStatus(result: FullResult, total: Row): string {
     const ok = result.status === 'passed';
     const label = ok ? paint('42;30', ' PASS ') : paint('41;37', ` ${result.status.toUpperCase()} `);
-    const note = total.counts.known > 0 ? `  ${total.counts.known} known site defect(s) tracked in FINDINGS.md` : '';
-    return `${label} ${seconds(result.duration)} wall time${note}`;
+    return `${label} ${seconds(result.duration)} wall time  ${this.verdict(total)}`;
+  }
+
+  /** Separates open site bugs from new failures, so a regression is not lost among known bugs. */
+  private verdict(total: Row): string {
+    const newFailures = total.counts.failed;
+    return `${total.counts.bug} open bug(s), ${newFailures} new failure(s)${newFailures > 0 ? ' ← look at these first' : ''}`;
+  }
+
+  private renderBugs(heading: string, color: string, bugs: readonly BugResult[]): string {
+    const lines = bugs.map((b, i) => `  ${i + 1}. ${paint('1', b.title)}\n     ${paint('90', b.group)}\n     ${paint(color, b.finding)}`);
+    return `\n${paint(`${color};1`, heading)}\n${lines.join('\n')}`;
   }
 
   private renderFailures(failures: readonly Failure[]): string {

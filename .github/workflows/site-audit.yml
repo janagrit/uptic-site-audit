@@ -9,6 +9,11 @@ on:
         description: 'Site to test (leave empty for the BASE_URL repo variable, else production)'
         required: false
         default: ''
+      skip_bugs:
+        description: 'Skip tests tagged @bug (open site defects) — the run is then green unless something new broke'
+        type: boolean
+        required: false
+        default: false
   push:
     branches: [main]
   pull_request:
@@ -39,12 +44,14 @@ jobs:
       - name: Type-check
         run: npx tsc -p .
 
-      # Full suite + regression baseline: fails if a test was removed, skipped or newly marked
-      # as a known defect without updating baseline/results.json (skipped for non-production targets).
+      # Full suite + regression baseline. Red while any @bug test (open site defect) fails; the
+      # step summary separates open bugs from new failures. Also red if a test was removed, skipped,
+      # newly tagged @bug or fixed without updating baseline/results.json (production only).
+      # A manual run with skip_bugs leaves out @bug tests, and with them the baseline check.
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test ${{ inputs.skip_bugs && '--grep-invert @bug' || '' }}
         env:
-          BASELINE: check
+          BASELINE: ${{ inputs.skip_bugs && 'off' || 'check' }}
 
       - name: Upload HTML report
         if: ${{ !cancelled() }}

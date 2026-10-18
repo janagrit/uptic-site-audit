@@ -5,15 +5,14 @@ Status: `open` · `reported` · `fixed`
 
 ## Summary
 
-**Fixed 2026-10-17/18:** the contact form works again (#20); the article now has an H1, a clean title and description (#1, #2, #10); table contrast (#16); search excerpts (#12); the public user list and security headers (#17, #18).
+**Fixed 2026-10-17/18:** the contact form works again (#20); the article now has an H1, a clean title and description (#1, #2, #10); table contrast (#16); search excerpts (#12); the public user list and security headers (#17, #18); the redesigned search page now says "Nothing matched that search" (#21).
 
 What matters most now:
 
-1. **Searches with no matches show no message** (finding #21). New since the search template was edited; a two-minute fix.
-2. **There is no proof.** No numbers, no case study, no client story anywhere in the article. For a company that sells marketing to hotels, one real result would do more than any other single change here (finding #5).
-3. **The article gives the reader nothing to do next.** No takeaways, and a closing question with no comments section. End with one clear step (findings #7, #9).
+1. **There is no proof.** No numbers, no case study, no client story anywhere in the article. For a company that sells marketing to hotels, one real result would do more than any other single change here (finding #5).
+2. **The article gives the reader nothing to do next.** No takeaways, and a closing question with no comments section. End with one clear step (findings #7, #9).
 
-Next: #21, then #5, #14 and #7.
+Next: #5, #14 and #7 (content), then #11 and #19.
 
 
 ## Platform
@@ -39,7 +38,7 @@ Next: #21, then #5, #14 and #7.
 | 18 | Site | No baseline security headers: HSTS, `X-Content-Type-Options: nosniff`, framing protection | Medium | Add them at the host/CDN or via `.htaccess`: `Strict-Transport-Security: max-age=31536000`, `X-Content-Type-Options: nosniff`, `Content-Security-Policy: frame-ancestors 'self'` | fixed (2026-10-18) |
 | 19 | Site | Header and its navigation (desktop and mobile) are injected by JavaScript; with JS blocked or failing, only the footer links remain | Low | Render the header nav in the block template (Navigation block) and let the script only enhance it | open |
 | 20 | Contact | **The contact form cannot be sent.** The page cache (LiteSpeed, `hcdn`) serves `/contact/` as stored HTML ~41–45 h old (`x-litespeed-cache: hit`, `age: 146947–163581`), so the form's security nonce is past its 24 h lifetime. Every submit is rejected with "This form has expired. Refresh the page and try again", and refreshing serves the same cached page. Confirmed by one test inquiry on 2026-10-15 | High | Exclude `/contact/` from the LiteSpeed page cache (or render the nonce via ESI), then purge the cache. Why it matters: this is the site's only lead form, and right now visitors who use it get an error | fixed (2026-10-18) |
-| 21 | Search | A search with no matches shows no message: only the heading, the search box and a "More posts" list of recent articles, which reads as if those were the matches. The template's "No results" block is gone (likely removed while fixing #12); seen 2026-10-17 | Medium | Add a "No results" block back inside the Search Results query loop, e.g. "Nothing matched your search. Try another word, or browse the articles below." | open |
+| 21 | Search | A search with no matches shows no message: only the heading, the search box and a "More posts" list of recent articles, which reads as if those were the matches. The template's "No results" block is gone (likely removed while fixing #12); seen 2026-10-17 | Medium | Add a "No results" block back inside the Search Results query loop, e.g. "Nothing matched your search. Try another word, or browse the articles below." | fixed (2026-10-18) |
 | 13 | Home | Glowing background and 01–04 strip appear to animate; also makes visual baselines flaky | Low | Confirm motion stops with OS "Reduce motion" on; mask the strip in the visual test | open |
 
 ## Content
@@ -92,9 +91,9 @@ All fixes are made in WordPress admin, not in this repo.
 
 ## Automated results
 
-Run `npm test` and record new findings above.
+Run `npm test` and record new findings above. A test for an open finding is tagged `@bug` and stays red until the site is fixed; `npm run test:skip-bugs` leaves those out.
 
-**Last run: 2026-10-18** — 80 tests: 77 passed, 3 known site defects (#11, #19, #21). Since 2026-10-16 the site fixed #1, #2, #10, #12, #16 (seen 2026-10-17) and #17, #18, #20 (seen 2026-10-18); new defect #21. Baseline check passed.
+**Last run: 2026-10-18 (2nd)** — 80 tests: 78 passed, 2 open bugs (#11, #19), 0 new failures; the run is red until those two are fixed. #21 was fixed the same day with a redesigned search page. Baseline check passed.
 
 - Passing: canonical, Open Graph, JSON-LD, indexable, axe WCAG 2.2 AA scan, img alt attributes, links, mobile overflow — on both Home and Article.
 - Note: axe passed, yet the author photo was flagged as missing alt earlier — verify manually (it may be a CSS background or have an empty `alt=""`).

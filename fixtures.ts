@@ -7,7 +7,6 @@ import { ContactPage } from './page-objects/ContactPage';
 import { HomePage } from './page-objects/HomePage';
 import { SearchPage } from './page-objects/SearchPage';
 import { SiteHeader } from './page-objects/SiteHeader';
-import type { AuditCheck, AuditPage } from './targets';
 
 interface AuditFixtures {
   basePage: BasePage;
@@ -46,11 +45,4 @@ export const apiTest = base.extend<{ wpApi: WpApi }>({
 
 export { expect };
 
-/**
- * Marks the current test as an expected failure when the target has a known issue for this check.
- * The test turns red once the site is fixed, signalling the entry can be removed.
- */
-export function expectKnownIssue(target: AuditPage, check: AuditCheck): void {
-  const finding = target.knownIssues?.[check];
-  test.fail(finding !== undefined, `Known site defect — ${finding}`);
-}
+export { BUG_TAG, auditDetails, knownBug } from './knownBugs';

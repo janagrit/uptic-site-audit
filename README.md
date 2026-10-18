@@ -16,7 +16,9 @@ cp .env.example .env   # optional: BASE_URL defaults to production
 
 | Command | Checks |
 |---------|--------|
-| `npm test` | everything |
+| `npm test` | everything; red while any open site bug (`@bug`) fails |
+| `npm run test:skip-bugs` | everything except `@bug` tests: green unless something new broke |
+| `npm run test:bugs` | only the `@bug` tests: which open findings are still broken |
 | `npm run test:seo` | h1, title, meta description, canonical, Open Graph, JSON-LD, robots |
 | `npm run test:a11y` | axe WCAG 2.2 AA scan, image alt text |
 | `npm run test:links` | broken links on each page (network errors named, 6 links at a time) |
@@ -26,15 +28,25 @@ cp .env.example .env   # optional: BASE_URL defaults to production
 | `npm run test:api` | REST API (`wp/v2/posts` schema, lookups, 400 contract), canonical-host redirects, sitemap URLs, user enumeration, security headers |
 | `npm run test:ui` | Playwright UI mode: pick tests, watch them run, time-travel through steps and network calls. Narrow it with args, e.g. `npm run test:ui -- tests/e2e` or `npm run test:ui -- --project=api` |
 | `npm run baseline:check` | full suite, then compare every test's outcome with `baseline/results.json` (what CI runs) |
-| `npm run baseline:update` | rewrite the baseline after an intentional change (refuses if the run fails) |
+| `npm run baseline:update` | rewrite the baseline after an intentional change (refuses if a test fails outside `@bug`) |
 | `npm run report` | open the HTML report from the last run |
 
 Also in `npm test`: `page-health` (every page loads its assets and throws no JS errors) and `smoke/not-found` (real 404 + `noindex`).
 Failing tests are findings, not bugs in the suite. Log them in [FINDINGS.md](FINDINGS.md).
 
+## Open site bugs (`@bug`)
+
+A test that fails because of an open finding is tagged `@bug` with its FINDINGS number, so the run stays **red until the site is fixed**:
+
+```ts
+test('home page offers a search box', knownBug('FINDINGS #11: no search UI outside the results page'), async ({ page }) => { … });
+```
+
+Audit checks (SEO, axe) take the finding from `knownIssues` in `targets.ts` instead. The results table splits failures into **Open bug** (a `@bug` test) and **Failed** (something new broke), and lists `@bug` tests that now pass under "Fixed on the site": remove the tag and mark the finding `fixed`. To skip open bugs: `npm run test:skip-bugs`, or the `skip_bugs` option on a manual CI run.
+
 ## Regression baseline
 
-[baseline/results.json](baseline/results.json) records the expected outcome of every test: `pass`, `known-defect` (a `test.fail` tied to a FINDINGS number) or `skipped`. `npm run baseline:check` fails when a test is removed, skipped, newly marked as a known defect, or missing from the file — the ways a red test gets "fixed" without fixing anything.
+[baseline/results.json](baseline/results.json) records the expected outcome of every test: `pass`, `bug` (a failing `@bug` test tied to a FINDINGS number) or `skipped`. `npm run baseline:check` fails when a test is removed, skipped, newly tagged `@bug`, fixed on the site (`bug → pass`, so the tag gets removed), or missing from the file — the ways a red test gets "fixed" without fixing anything.
 
 - After an intentional change (new test, site defect fixed, test retired): `npm run baseline:update`, review the JSON diff, commit it with the change.
 - Run it on the **full suite against production**. Other targets skip the check; a filtered run reports unselected tests as removed.
@@ -58,7 +70,8 @@ Target: the `base_url` input, else the `BASE_URL` repository variable (Settings 
 ## Structure
 
 ```
-targets.ts          pages under audit, known defects, sample article
+targets.ts          pages under audit, known defects (knownIssues), sample article
+knownBugs.ts        @bug tag: knownBug() for smoke/e2e, auditDetails() for audits
 fixtures.ts         test fixtures: page objects, wpApi, pageErrors, write guard (auto)
 page-objects/       one class per page or shared component
 network/
@@ -69,7 +82,7 @@ api/
   WpApi.ts          read-only client for /wp-json/wp/v2
   schemas.ts        zod schemas for API responses
 reporters/
-  summary-table.ts  results table printed after every run (Known defect = expected test.fail)
+  summary-table.ts  results table printed after every run (Open bug = failing @bug test)
   baseline.ts       BASELINE=check|update against baseline/results.json
 baseline/           expected outcome of every test
 tests/
