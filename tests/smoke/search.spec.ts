@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures';
+import { test, expect, knownBug } from '../../fixtures';
 
 test.describe('Smoke — Search', () => {
   test('returns matching results for a known term', async ({ searchPage }) => {
@@ -18,7 +18,6 @@ test.describe('Smoke — Search', () => {
   });
 
   test('shows a no-results message for an unknown term', async ({ searchPage }) => {
-    test.fail(true, 'Known site defect — FINDINGS #21: results template has no "No results" block; an empty search shows only "More posts"');
     await searchPage.open('zzqxnomatch');
 
     await expect(searchPage.noResultsMessage).toBeVisible();
@@ -48,8 +47,7 @@ test.describe('Smoke — Search', () => {
     await expect(searchPage.resultFullContent).toHaveCount(0);
   });
 
-  test('home page offers a search box', async ({ homePage, page }) => {
-    test.fail(true, 'Known site defect — FINDINGS #11: no search UI outside the results page');
+  test('home page offers a search box', knownBug('FINDINGS #11: no search UI outside the results page'), async ({ homePage, page }) => {
     await homePage.open();
 
     await expect(page.getByRole('search')).toBeVisible();

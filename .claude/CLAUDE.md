@@ -11,7 +11,7 @@ Playwright suite that audits the **live** site https://uptichospitality.com (Wor
 ## Rules
 
 - **Never write to production.** The auto fixture in `network/writeGuard.ts` aborts POSTs to `admin-post.php`, `admin-ajax.php`, `wp-comments-post.php`, `xmlrpc.php`. To test a write, intercept it with `interceptAction()` from `network/mocks.ts`. `api/WpApi.ts` stays read-only.
-- **Known site defects** are expected failures, not skipped tests: add the check to `knownIssues` in `targets.ts` (audits) or `test.fail(true, 'Known site defect — FINDINGS #N: …')` (smoke/e2e). The test turns red once the site is fixed — then remove the marker and mark the finding `fixed`.
+- **Known site defects** stay red, they are not skipped: tag the test `@bug` with `knownBug('FINDINGS #N: …')` (smoke/e2e) or add the check to `knownIssues` in `targets.ts` (audits, via `auditDetails()`). The run is red while the bug is open; the results table separates open bugs from new failures. When the test passes (listed under "Fixed on the site"), remove the tag and mark the finding `fixed`. `npm run test:skip-bugs` leaves `@bug` tests out.
 - Finding numbers in tests must match `FINDINGS.md`. Never reuse or renumber a number a test cites.
 - Animations: the home page fades content in on scroll unless reduced motion is on. Use `test.use({ reducedMotion: 'reduce' })` for contrast/visual checks.
 
@@ -35,7 +35,7 @@ Playwright suite that audits the **live** site https://uptichospitality.com (Wor
 
 Flake check: `npx playwright test <spec> --retries=0 --repeat-each=10`. Config has `retries: 1`, so a flaky test still shows as Flaky in the summary table.
 
-**Regression baseline:** `baseline/results.json` holds every test's expected outcome; `npm run baseline:check` (CI) fails if a test is removed, skipped, newly marked known-defect or missing from it. Never edit the JSON by hand; after an intentional change run `npm run baseline:update` and commit it with the change.
+**Regression baseline:** `baseline/results.json` holds every test's expected outcome; `npm run baseline:check` (CI) fails if a test is removed, skipped, newly tagged `@bug`, fixed (`bug → pass`) or missing from it. Never edit the JSON by hand; after an intentional change run `npm run baseline:update` and commit it with the change.
 
 ## Project Structure
 

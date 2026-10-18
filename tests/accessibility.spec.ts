@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect, expectKnownIssue } from '../fixtures';
+import { test, expect, auditDetails } from '../fixtures';
 import { PAGES } from '../targets';
 
 for (const target of PAGES) {
@@ -13,8 +13,7 @@ for (const target of PAGES) {
       await basePage.open(target.path);
     });
 
-    test('no WCAG 2.2 AA violations (axe)', async ({ page }) => {
-      expectKnownIssue(target, 'axe');
+    test('no WCAG 2.2 AA violations (axe)', auditDetails(target, 'axe'), async ({ page }) => {
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
         .analyze();

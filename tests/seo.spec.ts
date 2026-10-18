@@ -1,4 +1,4 @@
-import { test, expect, expectKnownIssue } from '../fixtures';
+import { test, expect, auditDetails } from '../fixtures';
 import { PAGES } from '../targets';
 
 const META_DESCRIPTION_MAX = 160;
@@ -11,20 +11,17 @@ for (const target of PAGES) {
       await basePage.open(target.path);
     });
 
-    test('has exactly one <h1>', async ({ page }) => {
-      expectKnownIssue(target, 'single-h1');
+    test('has exactly one <h1>', auditDetails(target, 'single-h1'), async ({ page }) => {
       await expect(page.locator('h1')).toHaveCount(1);
     });
 
-    test('title is present and not too long', async ({ page }) => {
-      expectKnownIssue(target, 'title-length');
+    test('title is present and not too long', auditDetails(target, 'title-length'), async ({ page }) => {
       const title = await page.title();
       expect(title.length, `title: "${title}"`).toBeGreaterThan(0);
       expect.soft(title.length, `title is ${title.length} chars`).toBeLessThanOrEqual(TITLE_MAX);
     });
 
-    test('meta description has a sensible length and ends cleanly', async ({ page }) => {
-      expectKnownIssue(target, 'meta-description');
+    test('meta description has a sensible length and ends cleanly', auditDetails(target, 'meta-description'), async ({ page }) => {
       const desc = (await page.locator('meta[name="description"]').getAttribute('content')) ?? '';
       expect(desc.length, 'meta description missing').toBeGreaterThan(0);
       expect.soft(desc.length).toBeGreaterThanOrEqual(META_DESCRIPTION_MIN);

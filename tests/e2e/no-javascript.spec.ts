@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures';
+import { test, expect, knownBug } from '../../fixtures';
 
 // If the JS bundle fails or is blocked, visitors must still read the page, move around and reach out.
 const KEY_PAGES: readonly string[] = ['/about-uptic/', '/case-studies/', '/insights/', '/contact/'];
@@ -20,8 +20,7 @@ test.describe('E2E — Without JavaScript', () => {
     }
   });
 
-  test('home renders the header navigation', async ({ homePage, siteHeader }) => {
-    test.fail(true, 'Known site defect — FINDINGS #19: header and its navigation are injected by JavaScript');
+  test('home renders the header navigation', knownBug('FINDINGS #19: header and its navigation are injected by JavaScript'), async ({ homePage, siteHeader }) => {
     await homePage.open();
 
     await expect(siteHeader.mainNav).toBeVisible();
