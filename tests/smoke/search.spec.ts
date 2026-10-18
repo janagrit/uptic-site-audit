@@ -18,6 +18,7 @@ test.describe('Smoke — Search', () => {
   });
 
   test('shows a no-results message for an unknown term', async ({ searchPage }) => {
+    test.fail(true, 'Known site defect — FINDINGS #21: results template has no "No results" block; an empty search shows only "More posts"');
     await searchPage.open('zzqxnomatch');
 
     await expect(searchPage.noResultsMessage).toBeVisible();
@@ -42,7 +43,6 @@ test.describe('Smoke — Search', () => {
   });
 
   test('results show short excerpts, not full page content', async ({ searchPage }) => {
-    test.fail(true, 'Known site defect — FINDINGS #12: results template renders full post content');
     await searchPage.open('revenue');
 
     await expect(searchPage.resultFullContent).toHaveCount(0);

@@ -141,7 +141,6 @@ test.describe('E2E — Contact form', () => {
   });
 
   test('serves the form from outside the page cache, so its nonce stays valid', async ({ request }) => {
-    test.fail(true, 'Known site defect — FINDINGS #20: /contact/ is served from the page cache with an expired nonce, so every submit returns "This form has expired"');
     // The first request may be the one that fills the cache; the second shows what visitors get.
     await request.get(CONTACT_PATH);
     const headers = (await request.get(CONTACT_PATH)).headers();

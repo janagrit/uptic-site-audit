@@ -11,8 +11,6 @@ const REQUIRED_HEADERS: readonly { name: string; ok: (headers: Record<string, st
 
 test.describe('API — Security', () => {
   test('REST API does not list user accounts publicly', async ({ wpApi }) => {
-    test.fail(true, 'Known site defect — FINDINGS #17: /wp-json/wp/v2/users exposes login slugs');
-
     const response = await wpApi.usersResponse();
 
     const users = response.ok() ? ((await response.json()) as unknown[]) : [];
@@ -20,8 +18,6 @@ test.describe('API — Security', () => {
   });
 
   test('home page sends the baseline security headers', async ({ request }) => {
-    test.fail(true, 'Known site defect — FINDINGS #18: no HSTS, nosniff or framing protection');
-
     const response = await request.get('/');
     const headers = response.headers();
 
