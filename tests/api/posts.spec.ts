@@ -28,6 +28,13 @@ test.describe('API — wp/v2/posts', () => {
     expect(await wpApi.posts({ slug: 'zzqx-no-such-post' })).toEqual([]);
   });
 
+  test('rejects an out-of-range page size with a JSON 400', async ({ wpApi }) => {
+    const response = await wpApi.postsResponse({ per_page: MAX_PER_PAGE + 1 });
+
+    expect(response.status()).toBe(400);
+    expect(await response.json()).toMatchObject({ code: 'rest_invalid_param', data: { status: 400 } });
+  });
+
   test('every published post link loads', async ({ wpApi, request }) => {
     const posts = await wpApi.posts({ per_page: MAX_PER_PAGE, _fields: 'id,slug,status,link,date_gmt,title,excerpt' });
 

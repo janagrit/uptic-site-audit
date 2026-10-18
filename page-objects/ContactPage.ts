@@ -21,6 +21,8 @@ export class ContactPage extends BasePage {
   readonly messageInput: Locator;
   readonly submitButton: Locator;
   readonly status: Locator;
+  /** Hidden field bots fill in; the server drops inquiries where it is not empty. */
+  readonly honeypot: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -33,6 +35,7 @@ export class ContactPage extends BasePage {
     // Not matched by name: the label switches to "Sending…" while submitting.
     this.submitButton = this.form.locator('button[type="submit"]');
     this.status = page.locator('#uptic-contact-page .cp-status');
+    this.honeypot = this.form.locator('input[name="uptic_company_fax"]');
   }
 
   async open(): Promise<Response | null> {

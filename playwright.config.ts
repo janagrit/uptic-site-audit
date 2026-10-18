@@ -6,7 +6,7 @@ export default defineConfig({
   timeout: 60_000,
   retries: 1,
   forbidOnly: !!process.env.CI,
-  reporter: [['list'], ['./reporters/summary-table.ts'], ['html', { open: 'never' }]],
+  reporter: [['list'], ['./reporters/summary-table.ts'], ['./reporters/baseline.ts'], ['html', { open: 'never' }]],
   use: {
     baseURL: BASE_URL,
     screenshot: 'only-on-failure',

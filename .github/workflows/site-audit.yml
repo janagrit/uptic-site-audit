@@ -31,7 +31,7 @@ jobs:
     env:
       BASE_URL: ${{ inputs.base_url || vars.BASE_URL || 'https://uptichospitality.com' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install dependencies
         run: npm ci
@@ -39,12 +39,16 @@ jobs:
       - name: Type-check
         run: npx tsc -p .
 
+      # Full suite + regression baseline: fails if a test was removed, skipped or newly marked
+      # as a known defect without updating baseline/results.json (skipped for non-production targets).
       - name: Run Playwright tests
         run: npx playwright test
+        env:
+          BASELINE: check
 
       - name: Upload HTML report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-report
           path: playwright-report/
@@ -52,7 +56,7 @@ jobs:
 
       - name: Upload failure traces and screenshots
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: test-results
           path: test-results/

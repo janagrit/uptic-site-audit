@@ -14,7 +14,7 @@ export class SearchPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    // Results embed full page content (FINDINGS #12), so the page has several h1s; pick ours.
+    // Matched by name: results once embedded full pages with their own h1s (FINDINGS #12, fixed).
     this.heading = page.getByRole('heading', { level: 1, name: /Search results for/ });
     this.form = page.getByRole('search');
     this.input = this.form.getByRole('searchbox');
