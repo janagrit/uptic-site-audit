@@ -4,7 +4,10 @@ Automated checks and a running list of recommendations for <https://uptichospita
 
 ## Setup
 
+All commands run from this folder (`e2e/site-audit/`).
+
 ```bash
+cd e2e/site-audit
 npm install
 npx playwright install chromium
 cp .env.example .env   # optional: BASE_URL defaults to production
@@ -55,7 +58,7 @@ How each failure mode was proven (a deliberately broken condition must turn ever
 
 ## CI (GitHub Actions)
 
-[.github/workflows/site-audit.yml](.github/workflows/site-audit.yml) type-checks and runs the full suite with the baseline check:
+[.github/workflows/site-audit.yml](../../.github/workflows/site-audit.yml) type-checks and runs the full suite with the baseline check:
 
 - daily at 06:00 UTC, on every push to `main`, and on pull requests
 - on demand: Actions → Site audit → Run workflow, optionally with a different `base_url`
