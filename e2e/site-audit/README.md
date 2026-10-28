@@ -4,7 +4,10 @@ Automated checks and a running list of recommendations for <https://uptichospita
 
 ## Setup
 
+All commands run from this folder (`e2e/site-audit/`).
+
 ```bash
+cd e2e/site-audit
 npm install
 npx playwright install chromium
 cp .env.example .env   # optional: BASE_URL defaults to production
@@ -36,7 +39,7 @@ Failing tests are findings, not bugs in the suite. Log them in [FINDINGS.md](FIN
 
 ## Open site bugs (`@bug`)
 
-A test that fails because of an open finding is tagged `@bug` with its FINDINGS number, so the run stays **red until the site is fixed**:
+A test that fails because of an open finding is tagged `@bug` with its FINDINGS number, so the run stays red until the site is fixed:
 
 ```ts
 test('home page offers a search box', knownBug('FINDINGS #11: no search UI outside the results page'), async ({ page }) => { … });
@@ -46,7 +49,7 @@ Audit checks (SEO, axe) take the finding from `knownIssues` in `targets.ts` inst
 
 ## Regression baseline
 
-[baseline/results.json](baseline/results.json) records the expected outcome of every test: `pass`, `bug` (a failing `@bug` test tied to a FINDINGS number) or `skipped`. `npm run baseline:check` fails when a test is removed, skipped, newly tagged `@bug`, fixed on the site (`bug → pass`, so the tag gets removed), or missing from the file — the ways a red test gets "fixed" without fixing anything.
+[baseline/results.json](baseline/results.json) records the expected outcome of every test: `pass`, `bug` (a failing `@bug` test tied to a FINDINGS number) or `skipped`. `npm run baseline:check` fails when a test is removed, skipped, newly tagged `@bug`, fixed on the site (`bug → pass`, so the tag gets removed), or missing from the file. These are the ways a red test gets "fixed" without fixing anything.
 
 - After an intentional change (new test, site defect fixed, test retired): `npm run baseline:update`, review the JSON diff, commit it with the change.
 - Run it on the **full suite against production**. Other targets skip the check; a filtered run reports unselected tests as removed.
@@ -55,10 +58,10 @@ How each failure mode was proven (a deliberately broken condition must turn ever
 
 ## CI (GitHub Actions)
 
-[.github/workflows/site-audit.yml](.github/workflows/site-audit.yml) type-checks and runs the full suite with the baseline check:
+[.github/workflows/site-audit.yml](../../.github/workflows/site-audit.yml) type-checks and runs the full suite with the baseline check:
 
-- **daily at 06:00 UTC**, on every push to `main`, and on pull requests
-- **on demand**: Actions → Site audit → Run workflow, optionally with a different `base_url`
+- daily at 06:00 UTC, on every push to `main`, and on pull requests
+- on demand: Actions → Site audit → Run workflow, optionally with a different `base_url`
 - in the `mcr.microsoft.com/playwright:v1.64.0-noble` image (keep its version in sync with `@playwright/test`)
 
 The results table appears on the run page; the HTML report (and traces on failure) are attached as artifacts. GitHub emails you when a scheduled run fails.
@@ -96,7 +99,7 @@ tests/
 
 The suite runs against the live site, so it must never write to it:
 
-- **Write guard** — an auto fixture aborts every non-GET request to `admin-post.php`, `admin-ajax.php`, `wp-comments-post.php` and `xmlrpc.php`. Aborted requests are exposed as `blockedWrites`.
+- **Write guard:** an auto fixture aborts every non-GET request to `admin-post.php`, `admin-ajax.php`, `wp-comments-post.php` and `xmlrpc.php`. Aborted requests are exposed as `blockedWrites`.
 - **To test a write**, intercept it: `interceptAction(page, ADMIN_POST, CONTACT_ACTION)` fulfills the request in the browser and records it for assertions. Nothing reaches the server.
 - `WpApi` is read-only by design. Don't add write methods.
 

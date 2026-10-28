@@ -2,6 +2,8 @@
 
 Playwright suite that audits the **live** site https://uptichospitality.com (WordPress 7, block theme, plugins `uptic-insights`, Slim SEO). There is no app code here: the site is the system under test, and failing checks are findings, logged in `FINDINGS.md`.
 
+The suite lives in `e2e/site-audit/` (nested so it can be merged into the main project). Run every command from this folder; the CI workflow stays at the repo root in `.github/workflows/site-audit.yml` with `working-directory: e2e/site-audit`.
+
 ## Tech Stack
 
 - TypeScript (strict, no emit), Node ≥ 20.12 (`process.loadEnvFile`)

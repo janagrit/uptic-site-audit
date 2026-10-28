@@ -33,6 +33,10 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.64.0-noble
       options: --user 1001
+    # The suite lives in e2e/site-audit/; every run step starts there.
+    defaults:
+      run:
+        working-directory: e2e/site-audit
     env:
       BASE_URL: ${{ inputs.base_url || vars.BASE_URL || 'https://uptichospitality.com' }}
     steps:
@@ -58,7 +62,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: playwright-report
-          path: playwright-report/
+          path: e2e/site-audit/playwright-report/
           retention-days: 14
 
       - name: Upload failure traces and screenshots
@@ -66,5 +70,5 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: test-results
-          path: test-results/
+          path: e2e/site-audit/test-results/
           retention-days: 14
