@@ -1,4 +1,7 @@
 import { test, expect, knownBug } from '../../fixtures';
+import { SAMPLE_ARTICLE_SLUG } from '../../targets';
+
+const HTTP_FORBIDDEN = 403;
 
 test.describe('Smoke — Search', () => {
   test('returns matching results for a known term', async ({ searchPage }) => {
@@ -31,12 +34,25 @@ test.describe('Smoke — Search', () => {
     expect(titles).toEqual([...new Set(titles)]);
   });
 
-  test('shows a script-like query as text instead of running it', async ({ searchPage, page }) => {
-    const payload = '"><img src=x id=xss-probe onerror="window.__xss=1">';
+  test('shows markup in a query as text', async ({ searchPage, page }) => {
+    // No event handler or <img>: the CDN firewall lets this through, so WordPress's own escaping is tested.
+    const payload = '"><b id=xss-probe>probe</b>';
 
     await searchPage.open(payload);
 
-    await expect(searchPage.heading).toContainText('<img src=x');
+    await expect(searchPage.heading).toContainText('<b id=xss-probe>');
+    await expect(page.locator('#xss-probe')).toHaveCount(0);
+  });
+
+  test('shows a script-like query as text instead of running it', async ({ searchPage, page }) => {
+    const payload = '"><img src=x id=xss-probe onerror="window.__xss=1">';
+
+    const response = await searchPage.open(payload);
+
+    // Since 2026-10-28 the CDN firewall (hcdn) answers 403 before WordPress sees the query (FINDINGS.md, Platform).
+    if (response?.status() !== HTTP_FORBIDDEN) {
+      await expect(searchPage.heading).toContainText('<img src=x');
+    }
     await expect(page.locator('#xss-probe')).toHaveCount(0);
     expect(await page.evaluate(() => (window as { __xss?: number }).__xss)).toBeUndefined();
   });
@@ -47,7 +63,13 @@ test.describe('Smoke — Search', () => {
     await expect(searchPage.resultFullContent).toHaveCount(0);
   });
 
-  test('home page offers a search box', knownBug('FINDINGS #11: no search UI outside the results page'), async ({ homePage, page }) => {
+  test('article page offers a search box', async ({ articlePage, page }) => {
+    await articlePage.openBySlug(SAMPLE_ARTICLE_SLUG);
+
+    await expect(page.getByRole('search')).toBeVisible();
+  });
+
+  test('home page offers a search box', knownBug('FINDINGS #11: no search UI on the home page'), async ({ homePage, page }) => {
     await homePage.open();
 
     await expect(page.getByRole('search')).toBeVisible();
