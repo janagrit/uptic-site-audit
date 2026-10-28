@@ -19,9 +19,7 @@ cp .env.example .env   # optional: BASE_URL defaults to production
 
 | Command | Checks |
 |---------|--------|
-| `npm test` | everything; red while any open site bug (`@bug`) fails |
-| `npm run test:skip-bugs` | everything except `@bug` tests: green unless something new broke |
-| `npm run test:bugs` | only the `@bug` tests: which open findings are still broken |
+| `npm test` | everything; known site bugs are expected failures, so it is green unless something new broke or a bug was fixed |
 | `npm run test:seo` | h1, title, meta description, canonical, Open Graph, JSON-LD, robots |
 | `npm run test:a11y` | axe WCAG 2.2 AA scan, image alt text |
 | `npm run test:links` | broken links on each page (network errors named, 6 links at a time) |
@@ -31,27 +29,30 @@ cp .env.example .env   # optional: BASE_URL defaults to production
 | `npm run test:api` | REST API (`wp/v2/posts` schema, lookups, 400 contract), canonical-host redirects, sitemap URLs, user enumeration, security headers |
 | `npm run test:ui` | Playwright UI mode: pick tests, watch them run, time-travel through steps and network calls. Narrow it with args, e.g. `npm run test:ui -- tests/e2e` or `npm run test:ui -- --project=api` |
 | `npm run baseline:check` | full suite, then compare every test's outcome with `baseline/results.json` (what CI runs) |
-| `npm run baseline:update` | rewrite the baseline after an intentional change (refuses if a test fails outside `@bug`) |
+| `npm run baseline:update` | rewrite the baseline after an intentional change (refuses if any test fails) |
 | `npm run report` | open the HTML report from the last run |
 
 Also in `npm test`: `page-health` (every page loads its assets and throws no JS errors) and `smoke/not-found` (real 404 + `noindex`).
 Failing tests are findings, not bugs in the suite. Log them in [FINDINGS.md](FINDINGS.md).
 
-## Open site bugs (`@bug`)
+## Known site bugs (`test.fail`)
 
-A test that fails because of an open finding is tagged `@bug` with its FINDINGS number, so the run stays red until the site is fixed:
+A test that fails because of an open finding calls `knownBug()` with its FINDINGS number. That is `test.fail()`: Playwright expects the failure, so the run stays green while the bug is open:
 
 ```ts
-test('home page offers a search box', knownBug('FINDINGS #11: no search UI outside the results page'), async ({ page }) => { … });
+test('home page offers a search box', async ({ homePage, page }) => {
+  knownBug('FINDINGS #11: no search UI on the home page');
+  …
+});
 ```
 
-Audit checks (SEO, axe) take the finding from `knownIssues` in `targets.ts` instead. The results table splits failures into **Open bug** (a `@bug` test) and **Failed** (something new broke), and lists `@bug` tests that now pass under "Fixed on the site": remove the tag and mark the finding `fixed`. To skip open bugs: `npm run test:skip-bugs`, or the `skip_bugs` option on a manual CI run.
+Audit checks (SEO, axe) call `expectKnownIssue(target, check)`, which takes the finding from `knownIssues` in `targets.ts`. The results table counts these under **Known bug**. Any red test is one of two things: listed under "Fixed on the site" (a known bug now passes: remove `knownBug()` and mark the finding `fixed`), or under **Failures** (something new broke).
 
 ## Regression baseline
 
-[baseline/results.json](baseline/results.json) records the expected outcome of every test: `pass`, `bug` (a failing `@bug` test tied to a FINDINGS number) or `skipped`. `npm run baseline:check` fails when a test is removed, skipped, newly tagged `@bug`, fixed on the site (`bug → pass`, so the tag gets removed), or missing from the file. These are the ways a red test gets "fixed" without fixing anything.
+[baseline/results.json](baseline/results.json) records the expected outcome of every test: `pass`, `bug` (an expected failure from `knownBug()`, tied to a FINDINGS number) or `skipped`. `npm run baseline:check` fails when a test is removed, skipped, newly marked as a known bug (`pass → bug`), or missing from the file. These are the ways a red test gets "fixed" without fixing anything.
 
-- After an intentional change (new test, site defect fixed, test retired): `npm run baseline:update`, review the JSON diff, commit it with the change.
+- After an intentional change (new test, `knownBug()` removed after a site fix, test retired): `npm run baseline:update`, review the JSON diff, commit it with the change.
 - Run it on the **full suite against production**. Other targets skip the check; a filtered run reports unselected tests as removed.
 
 How each failure mode was proven (a deliberately broken condition must turn every new test red): [.claude/tdd/failure-modes.tdd.md](.claude/tdd/failure-modes.tdd.md).
@@ -74,7 +75,7 @@ Target: the `base_url` input, else the `BASE_URL` repository variable (Settings 
 
 ```
 targets.ts          pages under audit, known defects (knownIssues), sample article
-knownBugs.ts        @bug tag: knownBug() for smoke/e2e, auditDetails() for audits
+knownBugs.ts        test.fail for open findings: knownBug() for smoke/e2e, expectKnownIssue() for audits
 fixtures.ts         test fixtures: page objects, wpApi, pageErrors, write guard (auto)
 page-objects/       one class per page or shared component
 network/
@@ -85,7 +86,7 @@ api/
   WpApi.ts          read-only client for /wp-json/wp/v2
   schemas.ts        zod schemas for API responses
 reporters/
-  summary-table.ts  results table printed after every run (Open bug = failing @bug test)
+  summary-table.ts  results table printed after every run (Known bug = expected failure from knownBug())
   baseline.ts       BASELINE=check|update against baseline/results.json
 baseline/           expected outcome of every test
 tests/

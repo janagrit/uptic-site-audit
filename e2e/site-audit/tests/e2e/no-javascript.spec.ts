@@ -20,7 +20,8 @@ test.describe('E2E — Without JavaScript', () => {
     }
   });
 
-  test('home renders the header navigation', knownBug('FINDINGS #19: header and its navigation are injected by JavaScript'), async ({ homePage, siteHeader }) => {
+  test('home renders the header navigation', async ({ homePage, siteHeader }) => {
+    knownBug('FINDINGS #19: header and its navigation are injected by JavaScript');
     await homePage.open();
 
     await expect(siteHeader.mainNav).toBeVisible();

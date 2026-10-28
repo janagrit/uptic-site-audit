@@ -92,11 +92,11 @@ All fixes are made in WordPress admin, not in this repo.
 
 ## Automated results
 
-Run `npm test` and record new findings above. A test for an open finding is tagged `@bug` and stays red until the site is fixed; `npm run test:skip-bugs` leaves those out.
+Run `npm test` and record new findings above. A test for an open finding calls `knownBug()` (`test.fail`): it counts as a known bug while the finding is open and turns red once the site is fixed.
 
-**Last run: 2026-10-28:** 82 tests: 80 passed, 2 open bugs (#11, #19), 0 new failures; the run is red until those two are fixed. The first run that day had 1 new failure: the CDN firewall now blocks the script-like search probe with a 403 (see Platform). The test now accepts the 403, and a new test checks WordPress's escaping with plain markup. #11 is partly fixed (article pages have search; new test). Checked by hand, still open: #3, #4, #5, #6, #7, #8, #9, #14, #15.
+**Last run: 2026-10-28:** 82 tests: 80 passed, 2 known bugs (#11, #19), 0 new failures. The first run that day had 1 new failure: the CDN firewall now blocks the script-like search probe with a 403 (see Platform). The test now accepts the 403, and a new test checks WordPress's escaping with plain markup. #11 is partly fixed (article pages have search; new test). Checked by hand, still open: #3, #4, #5, #6, #7, #8, #9, #14, #15.
 
-**Previous run: 2026-10-18 (2nd):** 80 tests: 78 passed, 2 open bugs (#11, #19), 0 new failures.
+**Previous run: 2026-10-18 (2nd):** 80 tests: 78 passed, 2 known bugs (#11, #19), 0 new failures.
 
 - Passing: canonical, Open Graph, JSON-LD, indexable, axe WCAG 2.2 AA scan, img alt attributes, links, mobile overflow, on both Home and Article.
 - Note: axe passes even though the author photo has no meaningful alt. It has an empty `alt=""` (verified 2026-10-28), which axe treats as decorative (#3).

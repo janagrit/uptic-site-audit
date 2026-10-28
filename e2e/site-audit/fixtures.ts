@@ -45,4 +45,4 @@ export const apiTest = base.extend<{ wpApi: WpApi }>({
 
 export { expect };
 
-export { BUG_TAG, auditDetails, knownBug } from './knownBugs';
+export { expectKnownIssue, knownBug } from './knownBugs';

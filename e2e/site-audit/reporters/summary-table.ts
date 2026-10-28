@@ -1,7 +1,6 @@
 import { appendFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import type { FullConfig, FullResult, Reporter, Suite, TestCase } from '@playwright/test/reporter';
-import { BUG_ANNOTATION, BUG_TAG } from '../knownBugs';
 
 type Bucket = 'passed' | 'failed' | 'flaky' | 'skipped' | 'bug';
 
@@ -27,7 +26,7 @@ const COLUMNS: readonly { key: Bucket; label: string; color: string }[] = [
   { key: 'passed', label: 'Passed', color: '32' },
   { key: 'failed', label: 'Failed', color: '31' },
   { key: 'flaky', label: 'Flaky', color: '33' },
-  { key: 'bug', label: 'Open bug', color: '35' },
+  { key: 'bug', label: 'Known bug', color: '35' },
   { key: 'skipped', label: 'Skipped', color: '90' },
 ];
 
@@ -40,18 +39,19 @@ const pad = (text: string, width: number, alignRight: boolean): string => {
 };
 const seconds = (ms: number): string => `${(ms / 1000).toFixed(1)}s`;
 
-const isBug = (test: TestCase): boolean => test.tags.includes(BUG_TAG);
+/** Known bugs are `test.fail` tests: Playwright expects them to fail and records the finding as a `fail` annotation. */
+const isBug = (test: TestCase): boolean => test.expectedStatus === 'failed';
 const findingOf = (test: TestCase): string =>
-  test.annotations.find((a) => a.type === BUG_ANNOTATION)?.description ?? 'no FINDINGS reference';
+  test.annotations.find((a) => a.type === 'fail')?.description ?? 'no FINDINGS reference';
 const emptyCounts = (): Record<Bucket, number> => ({ passed: 0, failed: 0, flaky: 0, skipped: 0, bug: 0 });
 
-/** Maps Playwright's outcome to a table column. A failing `@bug` test is an open site defect, not a new failure. */
+/** Maps Playwright's outcome to a table column. An expected failure (`test.fail`) is a known site bug, not a new failure. */
 function bucketOf(test: TestCase): Bucket {
   const outcome = test.outcome();
   if (outcome === 'skipped') return 'skipped';
   if (outcome === 'flaky') return 'flaky';
-  if (outcome === 'unexpected') return isBug(test) ? 'bug' : 'failed';
-  return 'passed';
+  if (outcome === 'unexpected') return 'failed';
+  return isBug(test) ? 'bug' : 'passed';
 }
 
 /** Prints a per-file results table, plus failure details, after the run. */
@@ -86,8 +86,8 @@ export default class SummaryTableReporter implements Reporter {
 
       const title = test.titlePath().slice(3).join(' › ');
       if (bucket === 'bug') openBugs.push({ group, title, finding: findingOf(test) });
-      if (bucket === 'passed' && isBug(test)) fixedBugs.push({ group, title, finding: findingOf(test) });
-      if (bucket === 'failed') {
+      if (bucket === 'failed' && isBug(test)) fixedBugs.push({ group, title, finding: findingOf(test) });
+      else if (bucket === 'failed') {
         const last = test.results.at(-1);
         const error = last?.error?.message?.split('\n').find((line) => line.trim()) ?? 'no error message';
         failures.push({ group, title, error: error.replace(/\x1b\[[0-9;]*m/g, '') });
@@ -106,12 +106,12 @@ export default class SummaryTableReporter implements Reporter {
     }
 
     process.stdout.write(`\n${this.renderTable(sorted, total)}\n`);
-    process.stdout.write(`${this.renderStatus(result, total)}\n`);
+    process.stdout.write(`${this.renderStatus(result, total, fixedBugs.length)}\n`);
     if (openBugs.length > 0) {
-      process.stdout.write(`${this.renderBugs('Open bugs (FINDINGS.md)', '35', openBugs)}\n`);
+      process.stdout.write(`${this.renderBugs('Known bugs (FINDINGS.md)', '35', openBugs)}\n`);
     }
     if (fixedBugs.length > 0) {
-      process.stdout.write(`${this.renderBugs('Fixed on the site: remove @bug and mark the finding fixed', '32', fixedBugs)}\n`);
+      process.stdout.write(`${this.renderBugs('Fixed on the site: remove knownBug() and mark the finding fixed', '32', fixedBugs)}\n`);
     }
     if (failures.length > 0) {
       process.stdout.write(`${this.renderFailures(failures)}\n`);
@@ -146,10 +146,10 @@ export default class SummaryTableReporter implements Reporter {
       ...rows.map((row) => `| \`${row.group}\` | ${counts(row)} | ${seconds(row.durationMs)} |`),
       `| **Total** | ${counts(total)} | ${seconds(total.durationMs)} |`,
       '',
-      `${this.verdict(total)}`,
+      `${this.verdict(total, fixedBugs.length)}`,
       '',
-      ...bugLines('Open bugs (FINDINGS.md)', openBugs),
-      ...bugLines('Fixed on the site: remove @bug and mark the finding fixed', fixedBugs),
+      ...bugLines('Known bugs (FINDINGS.md)', openBugs),
+      ...bugLines('Fixed on the site: remove knownBug() and mark the finding fixed', fixedBugs),
       ...(failures.length > 0
         ? ['### Failures', '', ...failures.map((f) => `- **${f.title}** (\`${f.group}\`): ${f.error.replace(/\|/g, '\\|')}`), '']
         : []),
@@ -184,16 +184,17 @@ export default class SummaryTableReporter implements Reporter {
     ].join('\n');
   }
 
-  private renderStatus(result: FullResult, total: Row): string {
+  private renderStatus(result: FullResult, total: Row, fixed: number): string {
     const ok = result.status === 'passed';
     const label = ok ? paint('42;30', ' PASS ') : paint('41;37', ` ${result.status.toUpperCase()} `);
-    return `${label} ${seconds(result.duration)} wall time  ${this.verdict(total)}`;
+    return `${label} ${seconds(result.duration)} wall time  ${this.verdict(total, fixed)}`;
   }
 
-  /** Separates open site bugs from new failures, so a regression is not lost among known bugs. */
-  private verdict(total: Row): string {
-    const newFailures = total.counts.failed;
-    return `${total.counts.bug} open bug(s), ${newFailures} new failure(s)${newFailures > 0 ? ' ← look at these first' : ''}`;
+  /** Separates known site bugs, bugs fixed on the site and new failures (all three red cases differ). */
+  private verdict(total: Row, fixed: number): string {
+    const newFailures = total.counts.failed - fixed;
+    const fixedNote = fixed > 0 ? `, ${fixed} fixed on the site` : '';
+    return `${total.counts.bug} known bug(s)${fixedNote}, ${newFailures} new failure(s)${newFailures > 0 ? ' ← look at these first' : ''}`;
   }
 
   private renderBugs(heading: string, color: string, bugs: readonly BugResult[]): string {

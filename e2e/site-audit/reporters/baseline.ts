@@ -1,22 +1,21 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import type { FullConfig, FullResult, Reporter, Suite, TestCase } from '@playwright/test/reporter';
-import { BUG_TAG } from '../knownBugs';
 import { BASE_URL, PRODUCTION_URL } from '../targets';
 
 /**
  * Regression baseline: the expected outcome of every test, committed in baseline/results.json.
  *
- * BASELINE=check   fail the run if any test is removed, newly skipped, newly tagged @bug, fixed
- *                  (bug → pass: remove the tag), or not yet in the baseline (CI runs this)
- * BASELINE=update  rewrite the baseline from this run (only after an intentional change; open
- *                  @bug failures are fine, any other failure blocks it)
+ * BASELINE=check   fail the run if any test is removed, newly skipped, newly marked as a known bug
+ *                  (`test.fail`), or not yet in the baseline (CI runs this)
+ * BASELINE=update  rewrite the baseline from this run (only after an intentional change; known
+ *                  bugs are fine, any other failure blocks it)
  * unset            reporter does nothing
  *
  * The baseline describes production and the full suite: other targets are skipped (their known
  * defects differ), and a partial run (file or -g filter) reports every unselected test as removed.
  *
- * Guards against "fixing" a red test by deleting it, skipping it or tagging it @bug.
+ * Guards against "fixing" a red test by deleting it, skipping it or wrapping it in test.fail.
  */
 
 type Outcome = 'pass' | 'bug' | 'skipped';
@@ -28,8 +27,8 @@ const MODE = process.env.BASELINE;
 function outcomeOf(test: TestCase): Outcome | 'failed' {
   const outcome = test.outcome();
   if (outcome === 'skipped') return 'skipped';
-  if (outcome === 'unexpected') return test.tags.includes(BUG_TAG) ? 'bug' : 'failed';
-  return 'pass';
+  if (outcome === 'unexpected') return 'failed';
+  return test.expectedStatus === 'failed' ? 'bug' : 'pass';
 }
 
 export default class BaselineReporter implements Reporter {
@@ -79,7 +78,7 @@ export default class BaselineReporter implements Reporter {
   private update(result: FullResult, outcomes: Map<string, Outcome | 'failed'>): void {
     const failed = [...outcomes.values()].filter((outcome) => outcome === 'failed').length;
     if (failed > 0 || result.status === 'interrupted' || result.status === 'timedout') {
-      process.stdout.write(`\nBaseline NOT updated: ${failed} test(s) failed outside @bug. Fix them or tag them with a FINDINGS entry first.\n`);
+      process.stdout.write(`\nBaseline NOT updated: ${failed} test(s) failed. Fix them, or mark them with knownBug() and a FINDINGS entry first.\n`);
       return;
     }
     const sorted = Object.fromEntries([...outcomes.entries()].sort(([a], [b]) => a.localeCompare(b)));

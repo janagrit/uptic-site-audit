@@ -69,7 +69,8 @@ test.describe('Smoke — Search', () => {
     await expect(page.getByRole('search')).toBeVisible();
   });
 
-  test('home page offers a search box', knownBug('FINDINGS #11: no search UI on the home page'), async ({ homePage, page }) => {
+  test('home page offers a search box', async ({ homePage, page }) => {
+    knownBug('FINDINGS #11: no search UI on the home page');
     await homePage.open();
 
     await expect(page.getByRole('search')).toBeVisible();

@@ -15,8 +15,6 @@
     "test:e2e": "playwright test tests/e2e",
     "test:api": "playwright test --project=api",
     "test:ui": "playwright test --ui",
-    "test:skip-bugs": "playwright test --grep-invert @bug",
-    "test:bugs": "playwright test --grep @bug",
     "baseline:check": "BASELINE=check playwright test",
     "baseline:update": "BASELINE=update playwright test",
     "report": "playwright show-report"
