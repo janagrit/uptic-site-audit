@@ -3,3 +3,7 @@ test-results/
 playwright-report/
 screenshots/
 .env
+# Machine-readable results of the last run (CI uploads them as artifacts)
+reports/
+perf-results/
+perf-report/

@@ -2,6 +2,7 @@ import { test, expect } from '../../fixtures';
 import { ADMIN_POST, CONTACT_ACTION, formBody } from '../../network/endpoints';
 import { interceptAction } from '../../network/mocks';
 import type { Inquiry } from '../../page-objects/ContactPage';
+import { siteUrl } from '../../targets';
 
 // The form posts to production's admin-post.php, so every test intercepts it. Nothing is ever sent.
 const INQUIRY: Inquiry = {
@@ -67,7 +68,7 @@ test.describe('E2E — Contact form', () => {
         const button = (event.target as HTMLFormElement).querySelector<HTMLButtonElement>('button[type="submit"]');
         (window as unknown as { __recordSubmitButton: (s: object) => void }).__recordSubmitButton({
           disabled: button?.disabled ?? false,
-          text: button?.textContent?.trim() ?? '',
+          text: button?.textContent.trim() ?? '',
         });
       });
     });
@@ -130,7 +131,7 @@ test.describe('E2E — Contact form', () => {
     // Replays the handler's real reply: a 303 back to the form, which renders the matching message.
     await interceptAction(page, ADMIN_POST, CONTACT_ACTION, {
       status: SEE_OTHER,
-      headers: { location: new URL(statusPath('sent'), page.url()).href },
+      headers: { location: siteUrl(statusPath('sent')) },
     });
 
     await contactPage.fill(INQUIRY);
@@ -142,8 +143,8 @@ test.describe('E2E — Contact form', () => {
 
   test('serves the form from outside the page cache, so its nonce stays valid', async ({ request }) => {
     // The first request may be the one that fills the cache; the second shows what visitors get.
-    await request.get(CONTACT_PATH);
-    const headers = (await request.get(CONTACT_PATH)).headers();
+    await request.get(siteUrl(CONTACT_PATH));
+    const headers = (await request.get(siteUrl(CONTACT_PATH))).headers();
 
     const cacheState = `x-litespeed-cache=${headers['x-litespeed-cache']}, age=${headers.age}`;
     expect(headers['x-litespeed-cache'], cacheState).not.toBe('hit');

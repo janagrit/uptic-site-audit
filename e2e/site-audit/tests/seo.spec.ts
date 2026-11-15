@@ -46,7 +46,7 @@ for (const target of PAGES) {
       const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
       expect(blocks.length).toBeGreaterThan(0);
       for (const block of blocks) {
-        expect(() => JSON.parse(block), 'invalid JSON-LD').not.toThrow();
+        expect(() => JSON.parse(block) as unknown, 'invalid JSON-LD').not.toThrow();
       }
     });
 

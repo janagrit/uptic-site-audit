@@ -29,6 +29,8 @@ test.describe('Smoke — Search', () => {
   test('lists each result only once', async ({ searchPage }) => {
     await searchPage.open('revenue');
 
+    // Not toHaveText(): the assertion is about duplicates, not about known titles.
+    // eslint-disable-next-line playwright/prefer-web-first-assertions
     const titles = await searchPage.resultTitles.allInnerTexts();
 
     expect(titles).toEqual([...new Set(titles)]);

@@ -9,6 +9,10 @@ on:
         description: 'Site to test (leave empty for the BASE_URL repo variable, else production)'
         required: false
         default: ''
+      performance:
+        description: 'Also run the performance audit'
+        type: boolean
+        default: false
   push:
     branches: [main]
   pull_request:
@@ -20,34 +24,63 @@ concurrency:
 permissions:
   contents: read
 
+# Every job runs in the image `npm run test:visual:update:linux` uses, so visual baselines match.
+# Keep its tag in sync with @playwright/test. The suite lives in e2e/site-audit/.
+env:
+  BASE_URL: ${{ inputs.base_url || vars.BASE_URL || 'https://uptichospitality.com' }}
+
 jobs:
-  test:
+  # Fast, no site traffic: type-check, lint and the unit tests (reporter, baseline, write guard,
+  # URL parsing, schemas). A broken framework fails here in a minute, before touching the live site.
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    # Same image as `npm run test:visual:update:linux`, so visual baselines match. Keep in sync with @playwright/test.
+    timeout-minutes: 10
     container:
       image: mcr.microsoft.com/playwright:v1.64.0-noble
       options: --user 1001
-    # The suite lives in e2e/site-audit/; every run step starts there.
     defaults:
       run:
         working-directory: e2e/site-audit
-    env:
-      BASE_URL: ${{ inputs.base_url || vars.BASE_URL || 'https://uptichospitality.com' }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: npm ci && npm run lint:setup
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm run test:unit
+
+  # The audit of the live site: API, smoke, e2e, accessibility, SEO, links, mobile, visual.
+  # One job on purpose: the regression baseline only trusts a run that collected the complete
+  # suite (reporters/baseline.ts), so the layers are not split across jobs. The step summary and
+  # reports/audit-results.json separate them by spec file and by outcome instead.
+  audit:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+      options: --user 1001
+    defaults:
+      run:
+        working-directory: e2e/site-audit
     steps:
       - uses: actions/checkout@v6
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Type-check
-        run: npx tsc -p .
-
-      # Full suite + regression baseline. Open site defects are expected failures (test.fail), so
-      # the run is green unless something new broke or a known bug was fixed on the site. Also red
-      # if a test was removed, skipped or newly marked as a known bug without updating
-      # baseline/results.json (production only).
-      - name: Run Playwright tests
+      # Open site defects are expected failures (knownBug / test.fail), so the run is green unless
+      # something new broke, a known bug was fixed on the site, or a test was removed, skipped or
+      # newly marked as a known bug without updating baseline/results.json (production only).
+      # The audit reporter decides the verdict once; the table on the run page says why.
+      - name: Run the audit
         run: npx playwright test
         env:
           BASELINE: check
@@ -60,6 +93,14 @@ jobs:
           path: e2e/site-audit/playwright-report/
           retention-days: 14
 
+      - name: Upload machine-readable results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: audit-results
+          path: e2e/site-audit/reports/audit-results.json
+          retention-days: 90
+
       - name: Upload failure traces and screenshots
         if: ${{ failure() }}
         uses: actions/upload-artifact@v6
@@ -67,3 +108,44 @@ jobs:
           name: test-results
           path: e2e/site-audit/test-results/
           retention-days: 14
+
+  # Lab performance: daily and on demand only. Noisy by nature, so it never gates a pull request;
+  # budgets are judged on medians of repeated runs, and history is kept between runs in the cache.
+  performance:
+    needs: validate
+    if: ${{ github.event_name == 'schedule' || inputs.performance }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+      options: --user 1001
+    defaults:
+      run:
+        working-directory: e2e/site-audit
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Restore performance history
+        uses: actions/cache@v4
+        with:
+          path: e2e/site-audit/perf-results/history.jsonl
+          key: perf-history-${{ github.run_id }}
+          restore-keys: perf-history-
+
+      - name: Run the performance audit
+        run: npm run perf
+        env:
+          PERF_RUNS: 5
+
+      - name: Upload performance results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: performance-results
+          path: |
+            e2e/site-audit/perf-results/
+            e2e/site-audit/perf-report/
+          retention-days: 90

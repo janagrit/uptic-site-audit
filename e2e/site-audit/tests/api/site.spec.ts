@@ -1,7 +1,7 @@
 import { apiTest as test, expect } from '../../fixtures';
-import { BASE_URL, PRODUCTION_URL } from '../../targets';
+import { IS_PRODUCTION, PRODUCTION_URL, siteUrl } from '../../targets';
 
-const CANONICAL_HOME = `${PRODUCTION_URL}/`;
+const CANONICAL_HOME = PRODUCTION_URL;
 const NON_CANONICAL_HOMES: readonly string[] = ['http://uptichospitality.com/', 'https://www.uptichospitality.com/'];
 
 /** `<loc>` values from a sitemap or sitemap index. */
@@ -12,7 +12,7 @@ function locs(xml: string): string[] {
 test.describe('API — Site', () => {
   for (const url of NON_CANONICAL_HOMES) {
     test(`${url} redirects permanently to the canonical https apex`, async ({ request }) => {
-      test.skip(BASE_URL !== PRODUCTION_URL, 'Host redirects only exist on production');
+      test.skip(!IS_PRODUCTION, 'Host redirects only exist on production');
 
       const response = await request.get(url, { maxRedirects: 0 });
 
@@ -22,7 +22,7 @@ test.describe('API — Site', () => {
   }
 
   test('sitemap lists only URLs that load', async ({ request }) => {
-    const index = await request.get('/sitemap.xml');
+    const index = await request.get(siteUrl('/sitemap.xml'));
     expect(index.status()).toBe(200);
 
     const sitemaps = locs(await index.text());

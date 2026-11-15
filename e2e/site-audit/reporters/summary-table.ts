@@ -1,209 +1,139 @@
-import { appendFileSync } from 'node:fs';
-import { relative } from 'node:path';
-import type { FullConfig, FullResult, Reporter, Suite, TestCase } from '@playwright/test/reporter';
+import { formatDrift } from './baseline';
+import type { Finding, FindingCategory } from './findings';
+import type { Counts, GroupRow, Outcome, RunReport } from './model';
 
-type Bucket = 'passed' | 'failed' | 'flaky' | 'skipped' | 'bug';
+/**
+ * Renders a RunReport as a console table and as GitHub step-summary Markdown. Rendering only: the
+ * verdict is decided in model.ts before anything is printed, so the PASS/FAIL label shown here is
+ * always the run's real exit status.
+ */
 
-interface Row {
-  readonly group: string;
-  counts: Record<Bucket, number>;
-  durationMs: number;
-}
-
-interface Failure {
-  readonly group: string;
-  readonly title: string;
-  readonly error: string;
-}
-
-interface BugResult {
-  readonly group: string;
-  readonly title: string;
-  readonly finding: string;
-}
-
-const COLUMNS: readonly { key: Bucket; label: string; color: string }[] = [
+const COLUMNS: readonly { key: Outcome; label: string; color: string }[] = [
   { key: 'passed', label: 'Passed', color: '32' },
-  { key: 'failed', label: 'Failed', color: '31' },
+  { key: 'failed', label: 'New failure', color: '31' },
   { key: 'flaky', label: 'Flaky', color: '33' },
-  { key: 'bug', label: 'Known bug', color: '35' },
+  { key: 'known-defect', label: 'Known bug', color: '35' },
+  { key: 'unexpected-pass', label: 'Fixed on site', color: '36' },
   { key: 'skipped', label: 'Skipped', color: '90' },
+  { key: 'not-run', label: 'Not run', color: '31' },
 ];
 
-const useColor = process.stdout.isTTY && !process.env.NO_COLOR;
-const paint = (code: string, text: string): string => (useColor ? `\x1b[${code}m${text}\x1b[0m` : text);
-const visibleLength = (text: string): number => text.replace(/\x1b\[[0-9;]*m/g, '').length;
-const pad = (text: string, width: number, alignRight: boolean): string => {
-  const fill = ' '.repeat(Math.max(0, width - visibleLength(text)));
-  return alignRight ? fill + text : text + fill;
-};
+const SECTIONS: readonly { category: FindingCategory; heading: string; color: string }[] = [
+  { category: 'new-failure', heading: 'New failures (look at these first)', color: '31' },
+  { category: 'fixed-on-site', heading: 'Fixed on the site: remove knownBug() and mark the finding fixed', color: '36' },
+  { category: 'known-defect', heading: 'Known bugs (FINDINGS.md)', color: '35' },
+];
+
 const seconds = (ms: number): string => `${(ms / 1000).toFixed(1)}s`;
+const stripAnsi = (text: string): string => text.replace(/\x1b\[[0-9;]*m/g, '');
+const firstLine = (text: string | undefined): string => text?.split('\n').find((line) => line.trim())?.trim() ?? '';
 
-/** Known bugs are `test.fail` tests: Playwright expects them to fail and records the finding as a `fail` annotation. */
-const isBug = (test: TestCase): boolean => test.expectedStatus === 'failed';
-const findingOf = (test: TestCase): string =>
-  test.annotations.find((a) => a.type === 'fail')?.description ?? 'no FINDINGS reference';
-const emptyCounts = (): Record<Bucket, number> => ({ passed: 0, failed: 0, flaky: 0, skipped: 0, bug: 0 });
-
-/** Maps Playwright's outcome to a table column. An expected failure (`test.fail`) is a known site bug, not a new failure. */
-function bucketOf(test: TestCase): Bucket {
-  const outcome = test.outcome();
-  if (outcome === 'skipped') return 'skipped';
-  if (outcome === 'flaky') return 'flaky';
-  if (outcome === 'unexpected') return 'failed';
-  return isBug(test) ? 'bug' : 'passed';
+function totalRow(report: RunReport): GroupRow {
+  return { group: 'Total', counts: report.counts, durationMs: report.groups.reduce((sum, g) => sum + g.durationMs, 0) };
 }
 
-/** Prints a per-file results table, plus failure details, after the run. */
-export default class SummaryTableReporter implements Reporter {
-  private rootDir = process.cwd();
-  private rootSuite: Suite | undefined;
+/** One-line explanation under the table, e.g. "2 known bug(s), 0 new failure(s)". */
+export function verdictLine(report: RunReport): string {
+  const c: Counts = report.counts;
+  const parts = [`${c['known-defect']} known bug(s)`, `${c.failed} new failure(s)`];
+  if (c['unexpected-pass'] > 0) parts.push(`${c['unexpected-pass']} fixed on the site`);
+  if (c.flaky > 0) parts.push(`${c.flaky} flaky`);
+  if (c['not-run'] > 0) parts.push(`${c['not-run']} not run`);
+  return parts.join(', ');
+}
 
-  onBegin(config: FullConfig, suite: Suite): void {
-    this.rootDir = config.rootDir;
-    this.rootSuite = suite;
+export function baselineLine(report: RunReport): string {
+  return `Baseline (${report.baseline.mode}): ${report.baseline.status} — ${report.baseline.message}`;
+}
+
+// ── Console ─────────────────────────────────────────────────────────────────────────────────────
+
+export function renderConsole(report: RunReport, useColor: boolean): string {
+  const paint = (code: string, text: string): string => (useColor ? `\x1b[${code}m${text}\x1b[0m` : text);
+  const pad = (text: string, width: number, right: boolean): string => {
+    const fill = ' '.repeat(Math.max(0, width - stripAnsi(text).length));
+    return right ? fill + text : text + fill;
+  };
+
+  const header = ['Spec', ...COLUMNS.map((c) => c.label), 'Time'];
+  const cells = (row: GroupRow, bold: boolean): string[] => [
+    bold ? paint('1', row.group) : row.group,
+    ...COLUMNS.map(({ key, color }) => (row.counts[key] > 0 ? paint(color, String(row.counts[key])) : paint('90', '·'))),
+    seconds(row.durationMs),
+  ];
+  const body = report.groups.map((row) => cells(row, false));
+  const footer = cells(totalRow(report), true);
+  const widths = header.map((h, i) => Math.max(h.length, ...[...body, footer].map((r) => stripAnsi(r[i]).length)));
+  const rule = (l: string, m: string, r: string): string => l + widths.map((w) => '─'.repeat(w + 2)).join(m) + r;
+  const line = (cols: readonly string[]): string => `│${cols.map((c, i) => ` ${pad(c, widths[i], i > 0)} `).join('│')}│`;
+
+  const out = [
+    '',
+    rule('┌', '┬', '┐'),
+    line(header.map((h) => paint('1', h))),
+    rule('├', '┼', '┤'),
+    ...body.map(line),
+    rule('├', '┼', '┤'),
+    line(footer),
+    rule('└', '┴', '┘'),
+  ];
+
+  const passed = report.verdict.status === 'passed';
+  const label = passed ? paint('42;30', ' PASS ') : paint('41;37', ` ${report.verdict.status.toUpperCase()} `);
+  out.push(`${label} ${seconds(report.durationMs)} wall time  ${verdictLine(report)}`);
+  out.push(paint(report.baseline.status === 'failed' || report.baseline.status === 'refused' ? '31' : '90', baselineLine(report)));
+  for (const issue of report.baseline.collectionIssues) out.push(paint('31', `  collection: ${issue}`));
+  for (const drift of report.baseline.drift) out.push(paint('31', `  ${formatDrift(drift)}`));
+  if (!passed) out.push(paint('31', `Why: ${report.verdict.reasons.join('; ')}`));
+
+  for (const { category, heading, color } of SECTIONS) {
+    const items = report.findings.filter((f) => f.category === category);
+    if (items.length === 0) continue;
+    out.push('', paint(`${color};1`, heading));
+    items.forEach((f, i) => {
+      out.push(`  ${i + 1}. ${paint('1', f.test)}`);
+      out.push(`     ${paint('90', `${f.severity} · ${f.page}${f.reference ? ` · ${f.reference}` : ''}`)}`);
+      const detail = category === 'new-failure' ? firstLine(f.evidence.error) : (f.summary ?? '');
+      if (detail) out.push(`     ${paint(color, detail)}`);
+    });
   }
+  return `${out.join('\n')}\n`;
+}
 
-  printsToStdio(): boolean {
-    return false;
+// ── GitHub step summary ─────────────────────────────────────────────────────────────────────────
+
+const cell = (text: string): string => text.replace(/\|/g, '\\|').replace(/\n/g, ' ');
+
+function findingRow(f: Finding): string {
+  const detail = f.category === 'new-failure' ? firstLine(f.evidence.error) : (f.summary ?? '');
+  return `| ${cell(f.severity)} | ${cell(f.page)} | ${cell(f.test)} | ${cell(f.reference ?? '')} | ${cell(detail)} | ${cell(f.remediation)} |`;
+}
+
+export function renderMarkdown(report: RunReport): string {
+  const icon = report.verdict.status === 'passed' ? '✅' : '❌';
+  const counts = (row: GroupRow): string => COLUMNS.map(({ key }) => (row.counts[key] > 0 ? row.counts[key] : '·')).join(' | ');
+  const lines = [
+    `## ${icon} Site audit — ${report.verdict.status} (${seconds(report.durationMs)})`,
+    '',
+    `Target: ${report.target.baseUrl}${report.target.isProduction ? ' (production)' : ''}`,
+    '',
+    `| Spec | ${COLUMNS.map((c) => c.label).join(' | ')} | Time |`,
+    `|---|${COLUMNS.map(() => '---:').join('|')}|---:|`,
+    ...report.groups.map((row) => `| \`${row.group}\` | ${counts(row)} | ${seconds(row.durationMs)} |`),
+    `| **Total** | ${counts(totalRow(report))} | ${seconds(totalRow(report).durationMs)} |`,
+    '',
+    verdictLine(report),
+    '',
+    baselineLine(report),
+    ...report.baseline.collectionIssues.map((issue) => `- collection: ${issue}`),
+    ...report.baseline.drift.map((d) => `- \`${formatDrift(d)}\``),
+    '',
+    ...(report.verdict.reasons.length > 0 ? [`**Why ${report.verdict.status}:** ${report.verdict.reasons.join('; ')}`, ''] : []),
+  ];
+  for (const { category, heading } of SECTIONS) {
+    const items = report.findings.filter((f) => f.category === category);
+    if (items.length === 0) continue;
+    lines.push(`### ${heading}`, '', '| Severity | Page | Test | Ref | Detail | Remediation |', '|---|---|---|---|---|---|', ...items.map(findingRow), '');
   }
-
-  onEnd(result: FullResult): void {
-    if (!this.rootSuite) return;
-    const rows = new Map<string, Row>();
-    const failures: Failure[] = [];
-    const openBugs: BugResult[] = [];
-    const fixedBugs: BugResult[] = [];
-
-    for (const test of this.rootSuite.allTests()) {
-      const project = test.parent.project()?.name ?? '';
-      const group = `${relative(this.rootDir, test.location.file)}${project ? ` [${project}]` : ''}`;
-      const row = rows.get(group) ?? { group, counts: emptyCounts(), durationMs: 0 };
-      const bucket = bucketOf(test);
-      row.counts[bucket] += 1;
-      row.durationMs += test.results.reduce((sum, r) => sum + r.duration, 0);
-      rows.set(group, row);
-
-      const title = test.titlePath().slice(3).join(' › ');
-      if (bucket === 'bug') openBugs.push({ group, title, finding: findingOf(test) });
-      if (bucket === 'failed' && isBug(test)) fixedBugs.push({ group, title, finding: findingOf(test) });
-      else if (bucket === 'failed') {
-        const last = test.results.at(-1);
-        const error = last?.error?.message?.split('\n').find((line) => line.trim()) ?? 'no error message';
-        failures.push({ group, title, error: error.replace(/\x1b\[[0-9;]*m/g, '') });
-      }
-    }
-
-    const sorted = [...rows.values()].sort((a, b) => a.group.localeCompare(b.group));
-    const total: Row = {
-      group: 'Total',
-      counts: emptyCounts(),
-      durationMs: 0,
-    };
-    for (const row of sorted) {
-      for (const { key } of COLUMNS) total.counts[key] += row.counts[key];
-      total.durationMs += row.durationMs;
-    }
-
-    process.stdout.write(`\n${this.renderTable(sorted, total)}\n`);
-    process.stdout.write(`${this.renderStatus(result, total, fixedBugs.length)}\n`);
-    if (openBugs.length > 0) {
-      process.stdout.write(`${this.renderBugs('Known bugs (FINDINGS.md)', '35', openBugs)}\n`);
-    }
-    if (fixedBugs.length > 0) {
-      process.stdout.write(`${this.renderBugs('Fixed on the site: remove knownBug() and mark the finding fixed', '32', fixedBugs)}\n`);
-    }
-    if (failures.length > 0) {
-      process.stdout.write(`${this.renderFailures(failures)}\n`);
-    }
-
-    const stepSummary = process.env.GITHUB_STEP_SUMMARY;
-    if (stepSummary) {
-      appendFileSync(stepSummary, this.renderMarkdown(sorted, total, result, failures, openBugs, fixedBugs));
-    }
-  }
-
-  /** Same table as Markdown for the GitHub Actions run page. */
-  private renderMarkdown(
-    rows: readonly Row[],
-    total: Row,
-    result: FullResult,
-    failures: readonly Failure[],
-    openBugs: readonly BugResult[],
-    fixedBugs: readonly BugResult[],
-  ): string {
-    const bugLines = (heading: string, bugs: readonly BugResult[]): string[] =>
-      bugs.length > 0 ? [`### ${heading}`, '', ...bugs.map((b) => `- **${b.title}** (\`${b.group}\`): ${b.finding.replace(/\|/g, '\\|')}`), ''] : [];
-    const icon = result.status === 'passed' ? '✅' : '❌';
-    const counts = (row: Row): string => COLUMNS.map(({ key }) => (row.counts[key] > 0 ? row.counts[key] : '·')).join(' | ');
-    const lines = [
-      `## ${icon} Site audit — ${result.status} (${seconds(result.duration)})`,
-      '',
-      `Target: ${process.env.BASE_URL ?? 'default'}`,
-      '',
-      `| Spec | ${COLUMNS.map((c) => c.label).join(' | ')} | Time |`,
-      `|---|${COLUMNS.map(() => '---:').join('|')}|---:|`,
-      ...rows.map((row) => `| \`${row.group}\` | ${counts(row)} | ${seconds(row.durationMs)} |`),
-      `| **Total** | ${counts(total)} | ${seconds(total.durationMs)} |`,
-      '',
-      `${this.verdict(total, fixedBugs.length)}`,
-      '',
-      ...bugLines('Known bugs (FINDINGS.md)', openBugs),
-      ...bugLines('Fixed on the site: remove knownBug() and mark the finding fixed', fixedBugs),
-      ...(failures.length > 0
-        ? ['### Failures', '', ...failures.map((f) => `- **${f.title}** (\`${f.group}\`): ${f.error.replace(/\|/g, '\\|')}`), '']
-        : []),
-    ];
-    return `${lines.join('\n')}\n`;
-  }
-
-  private renderTable(rows: readonly Row[], total: Row): string {
-    const header = ['Spec', ...COLUMNS.map((c) => c.label), 'Time'];
-    const cells = (row: Row, bold: boolean): string[] => [
-      bold ? paint('1', row.group) : row.group,
-      ...COLUMNS.map(({ key, color }) => (row.counts[key] > 0 ? paint(color, String(row.counts[key])) : paint('90', '·'))),
-      seconds(row.durationMs),
-    ];
-    const body = rows.map((row) => cells(row, false));
-    const footer = cells(total, true);
-    const widths = header.map((h, i) => Math.max(visibleLength(h), ...[...body, footer].map((r) => visibleLength(r[i]))));
-
-    const line = (left: string, mid: string, right: string): string =>
-      left + widths.map((w) => '─'.repeat(w + 2)).join(mid) + right;
-    const renderRow = (cols: readonly string[]): string =>
-      '│' + cols.map((c, i) => ` ${pad(c, widths[i], i > 0)} `).join('│') + '│';
-
-    return [
-      line('┌', '┬', '┐'),
-      renderRow(header.map((h) => paint('1', h))),
-      line('├', '┼', '┤'),
-      ...body.map(renderRow),
-      line('├', '┼', '┤'),
-      renderRow(footer),
-      line('└', '┴', '┘'),
-    ].join('\n');
-  }
-
-  private renderStatus(result: FullResult, total: Row, fixed: number): string {
-    const ok = result.status === 'passed';
-    const label = ok ? paint('42;30', ' PASS ') : paint('41;37', ` ${result.status.toUpperCase()} `);
-    return `${label} ${seconds(result.duration)} wall time  ${this.verdict(total, fixed)}`;
-  }
-
-  /** Separates known site bugs, bugs fixed on the site and new failures (all three red cases differ). */
-  private verdict(total: Row, fixed: number): string {
-    const newFailures = total.counts.failed - fixed;
-    const fixedNote = fixed > 0 ? `, ${fixed} fixed on the site` : '';
-    return `${total.counts.bug} known bug(s)${fixedNote}, ${newFailures} new failure(s)${newFailures > 0 ? ' ← look at these first' : ''}`;
-  }
-
-  private renderBugs(heading: string, color: string, bugs: readonly BugResult[]): string {
-    const lines = bugs.map((b, i) => `  ${i + 1}. ${paint('1', b.title)}\n     ${paint('90', b.group)}\n     ${paint(color, b.finding)}`);
-    return `\n${paint(`${color};1`, heading)}\n${lines.join('\n')}`;
-  }
-
-  private renderFailures(failures: readonly Failure[]): string {
-    const lines = failures.map((f, i) => `  ${i + 1}. ${paint('1', f.title)}\n     ${paint('90', f.group)}\n     ${paint('31', f.error)}`);
-    return `\n${paint('31;1', 'Failures')}\n${lines.join('\n')}`;
-  }
+  return `${lines.join('\n')}\n`;
 }
