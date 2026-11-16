@@ -22,7 +22,7 @@ Testing production rather than a test environment shapes most of the design:
 | Accessibility | axe WCAG 2.2 AA, alt text quality, decorative images, accessible names, keyboard and focus visibility, heading order, form labels, errors and announcements | `tests/accessibility.spec.ts` |
 | SEO, links, page health | Titles, descriptions, canonical, Open Graph, JSON-LD, robots, broken links, failing assets, JS errors | `tests/*.spec.ts` |
 | Mobile, visual | Reflow at 320–1024 px, touch targets (WCAG 2.5.8), form usability; deterministic screenshots of key components | `tests/mobile.spec.ts`, `tests/visual*.spec.ts` |
-| Performance (separate) | LCP, CLS, INP (lab), page weight, image optimization, budgets, history | `perf/` |
+| Performance (separate) | Lab LCP and load-time CLS, a single-click interaction-latency proxy (not INP), page weight, image optimization, budgets, history | `perf/` |
 
 What a tool cannot judge (does this alt text describe the image?) is listed in
 [docs/MANUAL-CHECKS.md](docs/MANUAL-CHECKS.md).
@@ -180,10 +180,24 @@ the WCAG spacing and inline-link exceptions a hand-written size check would miss
 page is loaded `PERF_RUNS` times in fresh, cold, throttled contexts (Slow 4G, 4× CPU, Pixel 7) and judged
 on the **median**: budgets in [perf/budgets.json](perf/budgets.json) fail, while a worsening against
 recent history only warns, and only once three earlier runs exist. Results go to `perf-results/<page>.json`
-and `perf-results/history.jsonl` (kept between CI runs). It reports LCP, CLS, INP (lab proxy), bytes by
-type, request count and image problems (oversized, legacy format, missing dimensions, lazy above the
-fold). Lighthouse was considered; this measures the same Core Web Vitals with the browser's own APIs,
-adds no dependency, and keeps the write guard active.
+and `perf-results/history.jsonl` (kept between CI runs).
+
+What it measures, and what it does not:
+
+| Metric | How | Limits |
+|---|---|---|
+| `lcpMs` | `largest-contentful-paint` PerformanceObserver, last entry before the first input | Lab value for one device profile; real users' LCP (field data) differs |
+| `cls` | `layout-shift` entries in session windows (1 s gap, 5 s max), shifts after input excluded | Covers the page load only: no scrolling, so shifts further down the page are not seen |
+| `inpMs` | Longest Event Timing entry for **one synthetic click** on the page heading after the page settles | **Not INP.** INP is a field metric over all of a visitor's interactions; this is one interaction, on inert text, after load. The Event Timing API only reports durations ≥ 16 ms (rounded to 8 ms), so `0` means "under 16 ms or not reported". It is a regression signal for main-thread blocking, not a Core Web Vitals score |
+| bytes, requests | Playwright `request.sizes()` (headers + body as transferred) per resource type, cache disabled | `totalBytes` includes everything; only scripts and images have their own budget (fonts are most of this site's weight) |
+| images | Natural vs drawn width × device pixel ratio, format, `width`/`height`, lazy above the fold | Heuristics with size thresholds, reported as annotations, not failures |
+
+Throttling is Chrome DevTools Protocol emulation (150 ms latency, 1.6 Mbps down, 4× CPU): latency is
+added per request and connection setup is not slowed, so it is lighter than Lighthouse's simulated
+Slow 4G. Numbers are comparable with this suite's own history, not with PageSpeed Insights. Field data
+(Search Console, CrUX) remains the source of truth for Core Web Vitals; see
+[docs/MANUAL-CHECKS.md](docs/MANUAL-CHECKS.md). Lighthouse was considered: it would add a large
+dependency, does not measure INP in navigation mode either, and would run outside the write guard.
 
 ### 7. Visual tests are deterministic by construction
 

@@ -1,5 +1,5 @@
 {
-  "$comment": "Performance budgets, judged on the median of PERF_RUNS cold loads under Slow 4G + 4x CPU (perf/measure.ts). lcpMs, cls and inpMs are Google's 'good' Core Web Vitals thresholds; byte and request budgets are the measured medians of 2026-11-15 (largest page: 765 KB, 15 requests) plus ~50% headroom. Per-page entries (by page name in targets.ts) override the defaults.",
+  "$comment": "Performance budgets, judged on the median of PERF_RUNS cold loads under Slow 4G + 4x CPU (perf/measure.ts). lcpMs and cls use Google's 'good' Core Web Vitals thresholds as lab limits; inpMs is a single-click interaction-latency proxy, not INP (see perf/measure.ts), held to INP's 'good' threshold as a sanity limit; byte and request budgets are the measured medians of 2026-11-15 (largest page: 765 KB, 15 requests) plus ~50% headroom. Per-page entries (by page name in targets.ts) override the defaults.",
   "default": {
     "lcpMs": 2500,
     "cls": 0.1,

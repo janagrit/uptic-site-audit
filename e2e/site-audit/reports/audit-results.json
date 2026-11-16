@@ -1,27 +1,248 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-15T23:41:40.205Z",
+  "generatedAt": "2026-11-16T00:02:26.505Z",
   "target": {
     "id": "uptic",
     "baseUrl": "https://uptichospitality.com/",
     "isProduction": true
   },
-  "durationMs": 2061.159,
+  "durationMs": 46776.317,
   "verdict": {
     "status": "passed",
     "reasons": []
   },
   "playwrightStatus": "passed",
   "counts": {
-    "passed": 178,
+    "passed": 335,
     "flaky": 0,
     "failed": 0,
-    "known-defect": 0,
+    "known-defect": 5,
     "unexpected-pass": 0,
     "skipped": 0,
     "not-run": 0
   },
   "groups": [
+    {
+      "group": "accessibility.spec.ts [desktop]",
+      "counts": {
+        "passed": 27,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 1,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 26229
+    },
+    {
+      "group": "api/posts.spec.ts [api]",
+      "counts": {
+        "passed": 21,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 9964
+    },
+    {
+      "group": "api/security.spec.ts [api]",
+      "counts": {
+        "passed": 14,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 2,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 3887
+    },
+    {
+      "group": "api/site.spec.ts [api]",
+      "counts": {
+        "passed": 3,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 1620
+    },
+    {
+      "group": "e2e/article-content.spec.ts [desktop]",
+      "counts": {
+        "passed": 1,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 1193
+    },
+    {
+      "group": "e2e/article-views.spec.ts [desktop]",
+      "counts": {
+        "passed": 7,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 9533
+    },
+    {
+      "group": "e2e/contact-form.spec.ts [desktop]",
+      "counts": {
+        "passed": 8,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 14278
+    },
+    {
+      "group": "e2e/no-javascript.spec.ts [desktop]",
+      "counts": {
+        "passed": 3,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 1,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 8448
+    },
+    {
+      "group": "links.spec.ts [desktop]",
+      "counts": {
+        "passed": 3,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 4793
+    },
+    {
+      "group": "mobile.spec.ts [mobile]",
+      "counts": {
+        "passed": 13,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 17939
+    },
+    {
+      "group": "page-health.spec.ts [desktop]",
+      "counts": {
+        "passed": 6,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 7208
+    },
+    {
+      "group": "seo.spec.ts [desktop]",
+      "counts": {
+        "passed": 21,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 13020
+    },
+    {
+      "group": "smoke/home.spec.ts [desktop]",
+      "counts": {
+        "passed": 3,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 1684
+    },
+    {
+      "group": "smoke/navigation.mobile.spec.ts [mobile]",
+      "counts": {
+        "passed": 2,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 1786
+    },
+    {
+      "group": "smoke/navigation.spec.ts [desktop]",
+      "counts": {
+        "passed": 7,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 7656
+    },
+    {
+      "group": "smoke/not-found.spec.ts [desktop]",
+      "counts": {
+        "passed": 1,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 614
+    },
+    {
+      "group": "smoke/search.spec.ts [desktop]",
+      "counts": {
+        "passed": 8,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 1,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 11603
+    },
     {
       "group": "unit/accessibility-rules.spec.ts [unit]",
       "counts": {
@@ -33,7 +254,7 @@
         "skipped": 0,
         "not-run": 0
       },
-      "durationMs": 30
+      "durationMs": 14
     },
     {
       "group": "unit/audit-reporter.spec.ts [unit]",
@@ -46,7 +267,7 @@
         "skipped": 0,
         "not-run": 0
       },
-      "durationMs": 50
+      "durationMs": 36
     },
     {
       "group": "unit/baseline.spec.ts [unit]",
@@ -59,7 +280,7 @@
         "skipped": 0,
         "not-run": 0
       },
-      "durationMs": 42
+      "durationMs": 31
     },
     {
       "group": "unit/findings.spec.ts [unit]",
@@ -85,7 +306,7 @@
         "skipped": 0,
         "not-run": 0
       },
-      "durationMs": 10
+      "durationMs": 5
     },
     {
       "group": "unit/reporter-model.spec.ts [unit]",
@@ -111,7 +332,7 @@
         "skipped": 0,
         "not-run": 0
       },
-      "durationMs": 9
+      "durationMs": 6
     },
     {
       "group": "unit/url-and-targets.spec.ts [unit]",
@@ -124,7 +345,7 @@
         "skipped": 0,
         "not-run": 0
       },
-      "durationMs": 8
+      "durationMs": 4
     },
     {
       "group": "unit/write-guard.spec.ts [unit]",
@@ -137,17 +358,124 @@
         "skipped": 0,
         "not-run": 0
       },
-      "durationMs": 910
+      "durationMs": 1444
+    },
+    {
+      "group": "visual.mobile.spec.ts [mobile]",
+      "counts": {
+        "passed": 2,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 1682
+    },
+    {
+      "group": "visual.spec.ts [desktop]",
+      "counts": {
+        "passed": 7,
+        "flaky": 0,
+        "failed": 0,
+        "known-defect": 0,
+        "unexpected-pass": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "durationMs": 6328
     }
   ],
   "baseline": {
-    "mode": "off",
-    "status": "off",
+    "mode": "check",
+    "status": "passed",
     "drift": [],
     "collectionIssues": [],
-    "message": "not checked (BASELINE unset)"
+    "message": "340 tests match"
   },
-  "findings": [],
+  "findings": [
+    {
+      "category": "known-defect",
+      "test": "api › api/security.spec.ts › API — Security headers on every audited page › Content-Security-Policy restricts where scripts load from",
+      "reference": "FINDINGS #22",
+      "severity": "Medium",
+      "page": "Site",
+      "summary": "The Content-Security-Policy only sets `frame-ancestors 'self'`. With no `script-src` or `default-src` it does not limit where scripts load from, so it gives no protection against injected scripts (XSS). Same header on every page, search, 404 and REST response. Seen 2026-11-15; reproduce with `curl -sI https://uptichospitality.com/ | grep -i content-security-policy`",
+      "actual": "undefined",
+      "evidence": {
+        "error": "Error: Home: CSP \"frame-ancestors 'self'\" has no script-src or default-src\n\nexpect(received).toBeDefined()\n\nReceived: undefined\nError: Article: Independent Hotels: CSP \"frame-ancestors 'self'\" has no script-src or default-src\n\nexpect(received).toBeDefined()\n\nReceived: undefined\nError: Contact: CSP \"frame-ancestors 'self'\" has no script-src or default-src\n\nexpect(received).toBeDefined()\n\nReceived: undefined",
+        "attachments": [
+          "test-results/api-security-API-—-Securit-ece00-cts-where-scripts-load-from-api/error-context.md"
+        ]
+      },
+      "remediation": "Start with `Content-Security-Policy-Report-Only` listing the script hosts the site really uses (`'self'`, analytics), review the reports for a week, then enforce it. Avoid `'unsafe-inline'`; use nonces for inline scripts"
+    },
+    {
+      "category": "known-defect",
+      "test": "api › api/security.spec.ts › API — Security headers on every audited page › responses do not advertise server software versions",
+      "reference": "FINDINGS #23",
+      "severity": "Low",
+      "page": "Site",
+      "summary": "Every response PHP generates (pages, search, 404, REST API) carries `X-Powered-By: PHP/8.3.36`, telling anyone the exact PHP version to look up vulnerabilities for. Static files from the CDN do not. Seen 2026-11-15; reproduce with `curl -sI https://uptichospitality.com/ | grep -i x-powered-by`",
+      "expected": "not /\\d+\\.\\d+/",
+      "actual": "\"PHP/8.3.36\"",
+      "evidence": {
+        "error": "Error: Home: x-powered-by: PHP/8.3.36\n\nexpect(received).not.toMatch(expected)\n\nExpected pattern: not /\\d+\\.\\d+/\nReceived string:      \"PHP/8.3.36\"\nError: Article: Independent Hotels: x-powered-by: PHP/8.3.36\n\nexpect(received).not.toMatch(expected)\n\nExpected pattern: not /\\d+\\.\\d+/\nReceived string:      \"PHP/8.3.36\"\nError: Contact: x-powered-by: PHP/8.3.36\n\nexpect(received).not.toMatch(expected)\n\nExpected pattern: not /\\d+\\.\\d+/\nReceived string:      \"PHP/8.3.36\"",
+        "attachments": [
+          "test-results/api-security-API-—-Securit-d6b02-se-server-software-versions-api/error-context.md"
+        ]
+      },
+      "remediation": "Hosting panel → PHP options → turn off `expose_php`, or add `Header unset X-Powered-By` to `.htaccess`"
+    },
+    {
+      "category": "known-defect",
+      "test": "desktop › accessibility.spec.ts › Accessibility — Article: Independent Hotels › keyboard: Tab moves through the page and every stop shows focus",
+      "reference": "FINDINGS #24",
+      "severity": "Medium",
+      "page": "Article",
+      "summary": "The search field above the footer shows no focus indicator: when focused by keyboard, the input's computed `outline-style` is `none`, and nothing else on the input, its wrapper or the form (border, shadow, background) changes, so keyboard users cannot see where they are (WCAG 2.4.7). Checked by hand on 2026-11-15 (computed styles and a screenshot): focused and unfocused look the same apart from the text caret. Which stylesheet removes the outline was not traced",
+      "evidence": {
+        "error": "Error: no visible focus indicator (WCAG 2.4.7):\ninput#wp-block-search__input-1 \"\"\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 3\n\n- Array []\n+ Array [\n+   \"input#wp-block-search__input-1 \\\"\\\"\",\n+ ]",
+        "attachments": [
+          "test-results/accessibility-Accessibilit-4edc8--and-every-stop-shows-focus-desktop/error-context.md"
+        ]
+      },
+      "remediation": "Add a focus style to the Search block, e.g. `.wp-block-search__inside-wrapper:focus-within { outline: 2px solid #1F3A2E; outline-offset: 2px; }`"
+    },
+    {
+      "category": "known-defect",
+      "test": "desktop › e2e/no-javascript.spec.ts › E2E — Without JavaScript › home renders the header navigation",
+      "reference": "FINDINGS #19",
+      "severity": "Low",
+      "page": "Site",
+      "summary": "Header and its navigation (desktop and mobile) are injected by JavaScript; with JS blocked or failing, only the footer links remain",
+      "expected": "visible",
+      "evidence": {
+        "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('navigation', { name: 'Main', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('navigation', { name: 'Main', exact: true }) with timeout 5000ms\n  - waiting for getByRole('navigation', { name: 'Main', exact: true })",
+        "attachments": [
+          "test-results/e2e-no-javascript-E2E-—-Wi-54fdd-nders-the-header-navigation-desktop/error-context.md"
+        ]
+      },
+      "remediation": "Render the header nav in the block template (Navigation block) and let the script only enhance it"
+    },
+    {
+      "category": "known-defect",
+      "test": "desktop › smoke/search.spec.ts › Smoke — Search › home page offers a search box",
+      "reference": "FINDINGS #11",
+      "severity": "Low",
+      "page": "Home",
+      "summary": "No search box on the home page. Partly fixed 2026-10-28: article pages now have one (Search block above the footer), the home page still has none",
+      "expected": "visible",
+      "evidence": {
+        "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('search')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('search') with timeout 5000ms\n  - waiting for getByRole('search')",
+        "attachments": [
+          "test-results/smoke-search-Smoke-—-Search-home-page-offers-a-search-box-desktop/error-context.md"
+        ]
+      },
+      "remediation": "Add the same Search block to the Home template, or drop search entirely"
+    }
+  ],
   "tests": [
     {
       "key": "unit › unit/accessibility-rules.spec.ts › Unit — Alt text rules › accepts alt=\"A guest looking at a hotel website\"",
@@ -156,7 +484,7 @@
       "title": "Unit — Alt text rules › accepts alt=\"A guest looking at a hotel website\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 5
+      "durationMs": 7
     },
     {
       "key": "unit › unit/accessibility-rules.spec.ts › Unit — Alt text rules › accepts alt=\"Uptic Hospitality — home\"",
@@ -165,7 +493,7 @@
       "title": "Unit — Alt text rules › accepts alt=\"Uptic Hospitality — home\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 3
+      "durationMs": 2
     },
     {
       "key": "unit › unit/accessibility-rules.spec.ts › Unit — Alt text rules › accepts alt=\"Tariq Khan\"",
@@ -174,7 +502,7 @@
       "title": "Unit — Alt text rules › accepts alt=\"Tariq Khan\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 14
+      "durationMs": 1
     },
     {
       "key": "unit › unit/accessibility-rules.spec.ts › Unit — Alt text rules › accepts alt=\"\"",
@@ -201,7 +529,7 @@
       "title": "Unit — Alt text rules › flags alt=\"IMG_1234.JPG\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/accessibility-rules.spec.ts › Unit — Alt text rules › flags alt=\"image\"",
@@ -228,7 +556,7 @@
       "title": "Unit — Alt text rules › flags alt=\"DSC_0042\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/accessibility-rules.spec.ts › Unit — Alt text rules › flags alt=\"hero-banner\"",
@@ -237,7 +565,7 @@
       "title": "Unit — Alt text rules › flags alt=\"hero-banner\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/accessibility-rules.spec.ts › Unit — Alt text rules › flags alt=\"xxxxxxxxxxxxxxxxxxxx\"",
@@ -291,7 +619,7 @@
       "title": "Unit — Decorative image rules › an image with real alt text is not judged here",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/accessibility-rules.spec.ts › Unit — Heading order rules › accepts a well-formed outline, including climbing back up",
@@ -354,7 +682,7 @@
       "title": "Unit — Focus indicator rules › a transparent outline does not count",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/accessibility-rules.spec.ts › Unit — Focus indicator rules › a focus-only box shadow, border or background change counts",
@@ -363,7 +691,7 @@
       "title": "Unit — Focus indicator rules › a focus-only box shadow, border or background change counts",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/audit-reporter.spec.ts › Unit — Audit reporter › green run: console, JSON and exit status all say passed",
@@ -372,7 +700,7 @@
       "title": "Unit — Audit reporter › green run: console, JSON and exit status all say passed",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 15
+      "durationMs": 9
     },
     {
       "key": "unit › unit/audit-reporter.spec.ts › Unit — Audit reporter › baseline drift with every test passing: FAIL everywhere, never PASS",
@@ -381,7 +709,7 @@
       "title": "Unit — Audit reporter › baseline drift with every test passing: FAIL everywhere, never PASS",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 9
+      "durationMs": 5
     },
     {
       "key": "unit › unit/audit-reporter.spec.ts › Unit — Audit reporter › step summary carries the same verdict",
@@ -390,7 +718,7 @@
       "title": "Unit — Audit reporter › step summary carries the same verdict",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 3
+      "durationMs": 4
     },
     {
       "key": "unit › unit/audit-reporter.spec.ts › Unit — Audit reporter › reports each category separately: new failure, known bug, unexpected pass, skipped",
@@ -408,7 +736,7 @@
       "title": "Unit — Audit reporter › update from an incomplete run leaves the baseline file untouched",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 3
+      "durationMs": 2
     },
     {
       "key": "unit › unit/audit-reporter.spec.ts › Unit — Audit reporter › update from a complete green run rewrites the baseline",
@@ -417,7 +745,7 @@
       "title": "Unit — Audit reporter › update from a complete green run rewrites the baseline",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 15
+      "durationMs": 11
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline mode › accepts unset, check and update; rejects anything else",
@@ -444,7 +772,7 @@
       "title": "Unit — Baseline drift › a removed test is drift",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 3
+      "durationMs": 1
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline drift › a new test is drift until recorded",
@@ -480,7 +808,7 @@
       "title": "Unit — Baseline drift › knownBug() removed without a baseline update is drift",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 4
+      "durationMs": 1
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline drift › a flaky pass still matches \"pass\"",
@@ -489,7 +817,7 @@
       "title": "Unit — Baseline drift › a flaky pass still matches \"pass\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 3
+      "durationMs": 0
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline drift › failures and unexpected passes are not drift (the verdict fails on them directly)",
@@ -498,7 +826,7 @@
       "title": "Unit — Baseline drift › failures and unexpected passes are not drift (the verdict fails on them directly)",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline collection evidence › a complete run has no issues",
@@ -507,7 +835,7 @@
       "title": "Unit — Baseline collection evidence › a complete run has no issues",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 3
+      "durationMs": 1
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline collection evidence › a spec file that contributed no tests (file filter, test.only, load error)",
@@ -543,7 +871,7 @@
       "title": "Unit — Baseline collection evidence › collected tests that never finished (interrupted run)",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline check › passes on a complete matching run",
@@ -552,7 +880,7 @@
       "title": "Unit — Baseline check › passes on a complete matching run",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 2
+      "durationMs": 0
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline check › fails on drift and lists it",
@@ -570,7 +898,7 @@
       "title": "Unit — Baseline check › fails on an incomplete run instead of reporting every unselected test as removed",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline check › fails when the baseline file is missing",
@@ -579,7 +907,7 @@
       "title": "Unit — Baseline check › fails when the baseline file is missing",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline check › is skipped (not failed) against a non-production target",
@@ -597,7 +925,7 @@
       "title": "Unit — Baseline check › never writes the file",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline update › writes every stable outcome, sorted, from a complete green run",
@@ -606,7 +934,7 @@
       "title": "Unit — Baseline update › writes every stable outcome, sorted, from a complete green run",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 10
+      "durationMs": 9
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline update › refuses an incomplete run",
@@ -624,7 +952,7 @@
       "title": "Unit — Baseline update › refuses an interrupted run",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline update › refuses while a test fails",
@@ -642,7 +970,7 @@
       "title": "Unit — Baseline update › refuses while a known bug passes unexpectedly",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline update › refuses to drop tests unless BASELINE_ALLOW_REMOVED=1",
@@ -669,7 +997,7 @@
       "title": "Unit — Baseline file › round-trips through write and read",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 2
     },
     {
       "key": "unit › unit/baseline.spec.ts › Unit — Baseline file › missing file reads as undefined; a corrupt one throws",
@@ -687,7 +1015,7 @@
       "title": "Unit — Findings › parses FINDINGS.md table rows, including escaped pipes",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 10
+      "durationMs": 12
     },
     {
       "key": "unit › unit/findings.spec.ts › Unit — Findings › reads the FINDINGS number from a knownBug() reason",
@@ -696,7 +1024,7 @@
       "title": "Unit — Findings › reads the FINDINGS number from a knownBug() reason",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 2
     },
     {
       "key": "unit › unit/findings.spec.ts › Unit — Findings › extracts expected and received values from an assertion message",
@@ -723,7 +1051,7 @@
       "title": "Unit — Findings › builds actionable findings for new failures, fixed bugs and known defects only",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 5
+      "durationMs": 2
     },
     {
       "key": "unit › unit/perf-stats.spec.ts › Unit — Performance statistics › median and percentiles interpolate",
@@ -759,7 +1087,7 @@
       "title": "Unit — Performance history › no trend verdict until history is long enough",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/perf-stats.spec.ts › Unit — Performance history › a large worsening against recent runs is reported",
@@ -768,7 +1096,7 @@
       "title": "Unit — Performance history › a large worsening against recent runs is reported",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "key": "unit › unit/perf-stats.spec.ts › Unit — Performance history › a change within tolerance, or on another page, is not",
@@ -777,7 +1105,7 @@
       "title": "Unit — Performance history › a change within tolerance, or on another page, is not",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/perf-stats.spec.ts › Unit — Performance history › history parsing skips blank and corrupt lines",
@@ -786,7 +1114,7 @@
       "title": "Unit — Performance history › history parsing skips blank and corrupt lines",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/perf-stats.spec.ts › Unit — Image optimization rules › a well-sized modern image has no issues",
@@ -795,7 +1123,7 @@
       "title": "Unit — Image optimization rules › a well-sized modern image has no issues",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 2
+      "durationMs": 0
     },
     {
       "key": "unit › unit/perf-stats.spec.ts › Unit — Image optimization rules › flags oversized, legacy-format, dimensionless and lazy above-the-fold images",
@@ -804,7 +1132,7 @@
       "title": "Unit — Image optimization rules › flags oversized, legacy-format, dimensionless and lazy above-the-fold images",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/perf-stats.spec.ts › Unit — Image optimization rules › small files are not worth flagging as oversized or legacy",
@@ -831,7 +1159,7 @@
       "title": "Unit — Outcome classification › failed → failed",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 2
     },
     {
       "key": "unit › unit/reporter-model.spec.ts › Unit — Outcome classification › timed out → failed",
@@ -876,7 +1204,7 @@
       "title": "Unit — Outcome classification › known bug timing out → failed",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/reporter-model.spec.ts › Unit — Outcome classification › skipped → skipped",
@@ -885,7 +1213,7 @@
       "title": "Unit — Outcome classification › skipped → skipped",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/reporter-model.spec.ts › Unit — Outcome classification › never started → not-run",
@@ -921,7 +1249,7 @@
       "title": "Unit — Verdict › all passed, known bugs and skips are green",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/reporter-model.spec.ts › Unit — Verdict › a new failure is red",
@@ -1011,7 +1339,7 @@
       "title": "Unit — REST contracts › accepts a real post list, extra fields included",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 2
     },
     {
       "key": "unit › unit/schemas.spec.ts › Unit — REST contracts › rejects missing slug and names the path",
@@ -1029,7 +1357,7 @@
       "title": "Unit — REST contracts › rejects id as a string and names the path",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/schemas.spec.ts › Unit — REST contracts › rejects draft leaking into the public list and names the path",
@@ -1047,7 +1375,7 @@
       "title": "Unit — REST contracts › rejects relative link and names the path",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 2
+      "durationMs": 0
     },
     {
       "key": "unit › unit/schemas.spec.ts › Unit — REST contracts › rejects date with a timezone and names the path",
@@ -1092,7 +1420,7 @@
       "title": "Unit — REST contracts › error envelope: rejects a 200 status, a missing message and HTML instead of JSON",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "key": "unit › unit/schemas.spec.ts › Unit — REST contracts › pagination headers must be integers",
@@ -1119,7 +1447,7 @@
       "title": "Unit — URL normalization › \"https://uptichospitality.com\" → \"https://uptichospitality.com/\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/url-and-targets.spec.ts › Unit — URL normalization › \"https://uptichospitality.com/\" → \"https://uptichospitality.com/\"",
@@ -1191,7 +1519,7 @@
       "title": "Unit — URL normalization › rejects \"\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 4
+      "durationMs": 1
     },
     {
       "key": "unit › unit/url-and-targets.spec.ts › Unit — URL normalization › rejects \"uptichospitality.com\"",
@@ -1218,7 +1546,7 @@
       "title": "Unit — URL normalization › rejects \"ftp://example.com\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/url-and-targets.spec.ts › Unit — URL normalization › rejects \"javascript:alert(1)\"",
@@ -1227,7 +1555,7 @@
       "title": "Unit — URL normalization › rejects \"javascript:alert(1)\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/url-and-targets.spec.ts › Unit — URL normalization › rejects \"https://user:secret@example.com\"",
@@ -1236,7 +1564,7 @@
       "title": "Unit — URL normalization › rejects \"https://user:secret@example.com\"",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "key": "unit › unit/url-and-targets.spec.ts › Unit — URL normalization › rejects \"https://example.com/?preview=1\"",
@@ -1371,7 +1699,7 @@
       "title": "Unit — Target resolution › rejects an unknown AUDIT_TARGET and names the valid ones",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "key": "unit › unit/url-and-targets.spec.ts › Unit — Target resolution › rejects an invalid BASE_URL",
@@ -1614,7 +1942,7 @@
       "title": "Unit — Write guard in the browser › lets GET through to the network",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 182
+      "durationMs": 124
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard in the browser › aborts POST to the site and records it",
@@ -1623,7 +1951,7 @@
       "title": "Unit — Write guard in the browser › aborts POST to the site and records it",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 71
+      "durationMs": 121
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard in the browser › aborts PUT to the site and records it",
@@ -1632,7 +1960,7 @@
       "title": "Unit — Write guard in the browser › aborts PUT to the site and records it",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 69
+      "durationMs": 123
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard in the browser › aborts PATCH to the site and records it",
@@ -1641,7 +1969,7 @@
       "title": "Unit — Write guard in the browser › aborts PATCH to the site and records it",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 74
+      "durationMs": 124
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard in the browser › aborts DELETE to the site and records it",
@@ -1650,7 +1978,7 @@
       "title": "Unit — Write guard in the browser › aborts DELETE to the site and records it",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 74
+      "durationMs": 98
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard in the browser › aborts a POST to an endpoint nobody listed (fail-safe)",
@@ -1659,7 +1987,7 @@
       "title": "Unit — Write guard in the browser › aborts a POST to an endpoint nobody listed (fail-safe)",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 73
+      "durationMs": 125
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard in the browser › aborts even a GET to a WordPress write endpoint",
@@ -1668,7 +1996,7 @@
       "title": "Unit — Write guard in the browser › aborts even a GET to a WordPress write endpoint",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 79
+      "durationMs": 197
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard in the browser › a mocked write is answered by the mock: not blocked, not sent",
@@ -1677,7 +2005,7 @@
       "title": "Unit — Write guard in the browser › a mocked write is answered by the mock: not blocked, not sent",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 91
+      "durationMs": 96
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard in the browser › a write the mock does not match falls through to the guard",
@@ -1686,7 +2014,7 @@
       "title": "Unit — Write guard in the browser › a write the mock does not match falls through to the guard",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 74
+      "durationMs": 170
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard in the browser › covers pages opened later in the same context (popups, new tabs)",
@@ -1695,7 +2023,7 @@
       "title": "Unit — Write guard in the browser › covers pages opened later in the same context (popups, new tabs)",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 123
+      "durationMs": 263
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard for API requests › passes reads through",
@@ -1713,7 +2041,7 @@
       "title": "Unit — Write guard for API requests › throws on request.post() before sending",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard for API requests › throws on request.put() before sending",
@@ -1722,7 +2050,7 @@
       "title": "Unit — Write guard for API requests › throws on request.put() before sending",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "key": "unit › unit/write-guard.spec.ts › Unit — Write guard for API requests › throws on request.patch() before sending",
@@ -1749,7 +2077,1485 @@
       "title": "Unit — Write guard for API requests › throws on fetch() with an unsafe method",
       "outcome": "passed",
       "attachments": [],
-      "durationMs": 0
+      "durationMs": 1
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Home › no WCAG 2.2 AA violations (axe)",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Home › no WCAG 2.2 AA violations (axe)",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1567
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Home › BUG-R2 regression: audits run with reduced motion",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Home › BUG-R2 regression: audits run with reduced motion",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 668
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Home › every image has alt text",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Home › every image has alt text",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 665
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Home › image alt text is not a file name or placeholder",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Home › image alt text is not a file name or placeholder",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 659
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Home › decorative images are marked consistently",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Home › decorative images are marked consistently",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 894
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Home › every interactive element has an accessible name",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Home › every interactive element has an accessible name",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 893
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Home › headings descend one level at a time from a single h1",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Home › headings descend one level at a time from a single h1",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 677
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Home › keyboard: Tab moves through the page and every stop shows focus",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Home › keyboard: Tab moves through the page and every stop shows focus",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1364
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Article: Independent Hotels › no WCAG 2.2 AA violations (axe)",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Article: Independent Hotels › no WCAG 2.2 AA violations (axe)",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1743
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Article: Independent Hotels › BUG-R2 regression: audits run with reduced motion",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Article: Independent Hotels › BUG-R2 regression: audits run with reduced motion",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 855
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Article: Independent Hotels › every image has alt text",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Article: Independent Hotels › every image has alt text",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 861
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Article: Independent Hotels › image alt text is not a file name or placeholder",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Article: Independent Hotels › image alt text is not a file name or placeholder",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 791
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Article: Independent Hotels › decorative images are marked consistently",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Article: Independent Hotels › decorative images are marked consistently",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 620
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Article: Independent Hotels › every interactive element has an accessible name",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Article: Independent Hotels › every interactive element has an accessible name",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1056
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Article: Independent Hotels › headings descend one level at a time from a single h1",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Article: Independent Hotels › headings descend one level at a time from a single h1",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 637
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Article: Independent Hotels › keyboard: Tab moves through the page and every stop shows focus",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Article: Independent Hotels › keyboard: Tab moves through the page and every stop shows focus",
+      "outcome": "known-defect",
+      "finding": "FINDINGS #24: search field has no visible focus indicator",
+      "error": "Error: no visible focus indicator (WCAG 2.4.7):\ninput#wp-block-search__input-1 \"\"\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 3\n\n- Array []\n+ Array [\n+   \"input#wp-block-search__input-1 \\\"\\\"\",\n+ ]",
+      "attachments": [
+        "test-results/accessibility-Accessibilit-4edc8--and-every-stop-shows-focus-desktop/error-context.md"
+      ],
+      "durationMs": 904
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact › no WCAG 2.2 AA violations (axe)",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact › no WCAG 2.2 AA violations (axe)",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1434
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact › BUG-R2 regression: audits run with reduced motion",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact › BUG-R2 regression: audits run with reduced motion",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1214
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact › every image has alt text",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact › every image has alt text",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 864
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact › image alt text is not a file name or placeholder",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact › image alt text is not a file name or placeholder",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 789
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact › decorative images are marked consistently",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact › decorative images are marked consistently",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 753
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact › every interactive element has an accessible name",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact › every interactive element has an accessible name",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 960
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact › headings descend one level at a time from a single h1",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact › headings descend one level at a time from a single h1",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 665
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact › keyboard: Tab moves through the page and every stop shows focus",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact › keyboard: Tab moves through the page and every stop shows focus",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 987
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact form › every visible field has a programmatic label",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact form › every visible field has a programmatic label",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 823
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact form › required fields are required in code and marked in their label",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact form › required fields are required in code and marked in their label",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 927
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact form › an invalid submit moves focus to the first invalid field and explains the error",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact form › an invalid submit moves focus to the first invalid field and explains the error",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 738
+    },
+    {
+      "key": "desktop › accessibility.spec.ts › Accessibility — Contact form › server responses are announced in a live region",
+      "project": "desktop",
+      "file": "accessibility.spec.ts",
+      "title": "Accessibility — Contact form › server responses are announced in a live region",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1221
+    },
+    {
+      "key": "desktop › e2e/article-content.spec.ts › E2E — Article matches the API › page shows the title the API returns",
+      "project": "desktop",
+      "file": "e2e/article-content.spec.ts",
+      "title": "E2E — Article matches the API › page shows the title the API returns",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1193
+    },
+    {
+      "key": "desktop › e2e/article-views.spec.ts › E2E — Article view counter › sends one view with the page id and token after 5 seconds",
+      "project": "desktop",
+      "file": "e2e/article-views.spec.ts",
+      "title": "E2E — Article view counter › sends one view with the page id and token after 5 seconds",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 998
+    },
+    {
+      "key": "desktop › e2e/article-views.spec.ts › E2E — Article view counter › sends no view when Global Privacy Control is on",
+      "project": "desktop",
+      "file": "e2e/article-views.spec.ts",
+      "title": "E2E — Article view counter › sends no view when Global Privacy Control is on",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1747
+    },
+    {
+      "key": "desktop › e2e/article-views.spec.ts › E2E — Article view counter › sends no view when Do Not Track is on",
+      "project": "desktop",
+      "file": "e2e/article-views.spec.ts",
+      "title": "E2E — Article view counter › sends no view when Do Not Track is on",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1393
+    },
+    {
+      "key": "desktop › e2e/article-views.spec.ts › E2E — Article view counter › sends no view from a background tab",
+      "project": "desktop",
+      "file": "e2e/article-views.spec.ts",
+      "title": "E2E — Article view counter › sends no view from a background tab",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1168
+    },
+    {
+      "key": "desktop › e2e/article-views.spec.ts › E2E — Article view counter › a failed view request raises no page error",
+      "project": "desktop",
+      "file": "e2e/article-views.spec.ts",
+      "title": "E2E — Article view counter › a failed view request raises no page error",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1308
+    },
+    {
+      "key": "desktop › e2e/article-views.spec.ts › E2E — Article view counter › BUG-R1 regression: page time moves only when the test advances it",
+      "project": "desktop",
+      "file": "e2e/article-views.spec.ts",
+      "title": "E2E — Article view counter › BUG-R1 regression: page time moves only when the test advances it",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1871
+    },
+    {
+      "key": "desktop › e2e/article-views.spec.ts › E2E — Article view counter › write guard aborts the view when no test intercepts it",
+      "project": "desktop",
+      "file": "e2e/article-views.spec.ts",
+      "title": "E2E — Article view counter › write guard aborts the view when no test intercepts it",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1048
+    },
+    {
+      "key": "desktop › e2e/contact-form.spec.ts › E2E — Contact form › posts every field, the nonce and an empty honeypot to admin-post",
+      "project": "desktop",
+      "file": "e2e/contact-form.spec.ts",
+      "title": "E2E — Contact form › posts every field, the nonce and an empty honeypot to admin-post",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1824
+    },
+    {
+      "key": "desktop › e2e/contact-form.spec.ts › E2E — Contact form › locks the button and shows \"Sending…\" on submit",
+      "project": "desktop",
+      "file": "e2e/contact-form.spec.ts",
+      "title": "E2E — Contact form › locks the button and shows \"Sending…\" on submit",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1943
+    },
+    {
+      "key": "desktop › e2e/contact-form.spec.ts › E2E — Contact form › blocks submission when required fields are empty",
+      "project": "desktop",
+      "file": "e2e/contact-form.spec.ts",
+      "title": "E2E — Contact form › blocks submission when required fields are empty",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1738
+    },
+    {
+      "key": "desktop › e2e/contact-form.spec.ts › E2E — Contact form › blocks submission with an invalid email address",
+      "project": "desktop",
+      "file": "e2e/contact-form.spec.ts",
+      "title": "E2E — Contact form › blocks submission with an invalid email address",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1929
+    },
+    {
+      "key": "desktop › e2e/contact-form.spec.ts › E2E — Contact form › re-enables the button when the user comes back after a failed submit",
+      "project": "desktop",
+      "file": "e2e/contact-form.spec.ts",
+      "title": "E2E — Contact form › re-enables the button when the user comes back after a failed submit",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 2095
+    },
+    {
+      "key": "desktop › e2e/contact-form.spec.ts › E2E — Contact form › keeps the spam honeypot out of sight and out of the tab order",
+      "project": "desktop",
+      "file": "e2e/contact-form.spec.ts",
+      "title": "E2E — Contact form › keeps the spam honeypot out of sight and out of the tab order",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1696
+    },
+    {
+      "key": "desktop › e2e/contact-form.spec.ts › E2E — Contact form › shows a confirmation after a successful submit",
+      "project": "desktop",
+      "file": "e2e/contact-form.spec.ts",
+      "title": "E2E — Contact form › shows a confirmation after a successful submit",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 2173
+    },
+    {
+      "key": "desktop › e2e/contact-form.spec.ts › E2E — Contact form › serves the form from outside the page cache, so its nonce stays valid",
+      "project": "desktop",
+      "file": "e2e/contact-form.spec.ts",
+      "title": "E2E — Contact form › serves the form from outside the page cache, so its nonce stays valid",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 880
+    },
+    {
+      "key": "desktop › e2e/no-javascript.spec.ts › E2E — Without JavaScript › home shows its headline",
+      "project": "desktop",
+      "file": "e2e/no-javascript.spec.ts",
+      "title": "E2E — Without JavaScript › home shows its headline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 796
+    },
+    {
+      "key": "desktop › e2e/no-javascript.spec.ts › E2E — Without JavaScript › home still links to every key page",
+      "project": "desktop",
+      "file": "e2e/no-javascript.spec.ts",
+      "title": "E2E — Without JavaScript › home still links to every key page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 676
+    },
+    {
+      "key": "desktop › e2e/no-javascript.spec.ts › E2E — Without JavaScript › home renders the header navigation",
+      "project": "desktop",
+      "file": "e2e/no-javascript.spec.ts",
+      "title": "E2E — Without JavaScript › home renders the header navigation",
+      "outcome": "known-defect",
+      "finding": "FINDINGS #19: header and its navigation are injected by JavaScript",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('navigation', { name: 'Main', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('navigation', { name: 'Main', exact: true }) with timeout 5000ms\n  - waiting for getByRole('navigation', { name: 'Main', exact: true })",
+      "attachments": [
+        "test-results/e2e-no-javascript-E2E-—-Wi-54fdd-nders-the-header-navigation-desktop/error-context.md"
+      ],
+      "durationMs": 6223
+    },
+    {
+      "key": "desktop › e2e/no-javascript.spec.ts › E2E — Without JavaScript › contact form is complete and posts without scripts",
+      "project": "desktop",
+      "file": "e2e/no-javascript.spec.ts",
+      "title": "E2E — Without JavaScript › contact form is complete and posts without scripts",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 753
+    },
+    {
+      "key": "desktop › links.spec.ts › Links — Home: no broken links",
+      "project": "desktop",
+      "file": "links.spec.ts",
+      "title": "Links — Home: no broken links",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1639
+    },
+    {
+      "key": "desktop › links.spec.ts › Links — Article: Independent Hotels: no broken links",
+      "project": "desktop",
+      "file": "links.spec.ts",
+      "title": "Links — Article: Independent Hotels: no broken links",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1617
+    },
+    {
+      "key": "desktop › links.spec.ts › Links — Contact: no broken links",
+      "project": "desktop",
+      "file": "links.spec.ts",
+      "title": "Links — Contact: no broken links",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1537
+    },
+    {
+      "key": "desktop › page-health.spec.ts › Page health — Home › every same-origin asset loads",
+      "project": "desktop",
+      "file": "page-health.spec.ts",
+      "title": "Page health — Home › every same-origin asset loads",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1487
+    },
+    {
+      "key": "desktop › page-health.spec.ts › Page health — Home › throws no uncaught JavaScript errors",
+      "project": "desktop",
+      "file": "page-health.spec.ts",
+      "title": "Page health — Home › throws no uncaught JavaScript errors",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 945
+    },
+    {
+      "key": "desktop › page-health.spec.ts › Page health — Article: Independent Hotels › every same-origin asset loads",
+      "project": "desktop",
+      "file": "page-health.spec.ts",
+      "title": "Page health — Article: Independent Hotels › every same-origin asset loads",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1159
+    },
+    {
+      "key": "desktop › page-health.spec.ts › Page health — Article: Independent Hotels › throws no uncaught JavaScript errors",
+      "project": "desktop",
+      "file": "page-health.spec.ts",
+      "title": "Page health — Article: Independent Hotels › throws no uncaught JavaScript errors",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1212
+    },
+    {
+      "key": "desktop › page-health.spec.ts › Page health — Contact › every same-origin asset loads",
+      "project": "desktop",
+      "file": "page-health.spec.ts",
+      "title": "Page health — Contact › every same-origin asset loads",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1180
+    },
+    {
+      "key": "desktop › page-health.spec.ts › Page health — Contact › throws no uncaught JavaScript errors",
+      "project": "desktop",
+      "file": "page-health.spec.ts",
+      "title": "Page health — Contact › throws no uncaught JavaScript errors",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1225
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Home › has exactly one <h1>",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Home › has exactly one <h1>",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 416
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Home › title is present and not too long",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Home › title is present and not too long",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 345
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Home › meta description has a sensible length and ends cleanly",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Home › meta description has a sensible length and ends cleanly",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 549
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Home › has a canonical URL",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Home › has a canonical URL",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 525
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Home › has Open Graph title, description and image",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Home › has Open Graph title, description and image",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 458
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Home › has JSON-LD structured data",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Home › has JSON-LD structured data",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 426
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Home › is not blocked from indexing",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Home › is not blocked from indexing",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 465
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Article: Independent Hotels › has exactly one <h1>",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Article: Independent Hotels › has exactly one <h1>",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 793
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Article: Independent Hotels › title is present and not too long",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Article: Independent Hotels › title is present and not too long",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 819
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Article: Independent Hotels › meta description has a sensible length and ends cleanly",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Article: Independent Hotels › meta description has a sensible length and ends cleanly",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 705
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Article: Independent Hotels › has a canonical URL",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Article: Independent Hotels › has a canonical URL",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 689
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Article: Independent Hotels › has Open Graph title, description and image",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Article: Independent Hotels › has Open Graph title, description and image",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 682
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Article: Independent Hotels › has JSON-LD structured data",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Article: Independent Hotels › has JSON-LD structured data",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 677
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Article: Independent Hotels › is not blocked from indexing",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Article: Independent Hotels › is not blocked from indexing",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 628
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Contact › has exactly one <h1>",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Contact › has exactly one <h1>",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 624
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Contact › title is present and not too long",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Contact › title is present and not too long",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 731
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Contact › meta description has a sensible length and ends cleanly",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Contact › meta description has a sensible length and ends cleanly",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 639
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Contact › has a canonical URL",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Contact › has a canonical URL",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 755
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Contact › has Open Graph title, description and image",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Contact › has Open Graph title, description and image",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 728
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Contact › has JSON-LD structured data",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Contact › has JSON-LD structured data",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 570
+    },
+    {
+      "key": "desktop › seo.spec.ts › SEO — Contact › is not blocked from indexing",
+      "project": "desktop",
+      "file": "seo.spec.ts",
+      "title": "SEO — Contact › is not blocked from indexing",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 796
+    },
+    {
+      "key": "desktop › smoke/home.spec.ts › Smoke — Home › loads successfully with the hero heading",
+      "project": "desktop",
+      "file": "smoke/home.spec.ts",
+      "title": "Smoke — Home › loads successfully with the hero heading",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 612
+    },
+    {
+      "key": "desktop › smoke/home.spec.ts › Smoke — Home › has a \"Start a conversation\" call to action",
+      "project": "desktop",
+      "file": "smoke/home.spec.ts",
+      "title": "Smoke — Home › has a \"Start a conversation\" call to action",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 588
+    },
+    {
+      "key": "desktop › smoke/home.spec.ts › Smoke — Home › loads without JavaScript errors",
+      "project": "desktop",
+      "file": "smoke/home.spec.ts",
+      "title": "Smoke — Home › loads without JavaScript errors",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 484
+    },
+    {
+      "key": "desktop › smoke/navigation.spec.ts › Smoke — Navigation (desktop) › \"About Uptic\" opens its page",
+      "project": "desktop",
+      "file": "smoke/navigation.spec.ts",
+      "title": "Smoke — Navigation (desktop) › \"About Uptic\" opens its page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 918
+    },
+    {
+      "key": "desktop › smoke/navigation.spec.ts › Smoke — Navigation (desktop) › \"Digital Presence\" opens its page",
+      "project": "desktop",
+      "file": "smoke/navigation.spec.ts",
+      "title": "Smoke — Navigation (desktop) › \"Digital Presence\" opens its page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1251
+    },
+    {
+      "key": "desktop › smoke/navigation.spec.ts › Smoke — Navigation (desktop) › \"Revenue Strategy\" opens its page",
+      "project": "desktop",
+      "file": "smoke/navigation.spec.ts",
+      "title": "Smoke — Navigation (desktop) › \"Revenue Strategy\" opens its page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1419
+    },
+    {
+      "key": "desktop › smoke/navigation.spec.ts › Smoke — Navigation (desktop) › \"Guest Journey\" opens its page",
+      "project": "desktop",
+      "file": "smoke/navigation.spec.ts",
+      "title": "Smoke — Navigation (desktop) › \"Guest Journey\" opens its page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1818
+    },
+    {
+      "key": "desktop › smoke/navigation.spec.ts › Smoke — Navigation (desktop) › \"Case Studies\" opens its page",
+      "project": "desktop",
+      "file": "smoke/navigation.spec.ts",
+      "title": "Smoke — Navigation (desktop) › \"Case Studies\" opens its page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 810
+    },
+    {
+      "key": "desktop › smoke/navigation.spec.ts › Smoke — Navigation (desktop) › \"Insights\" opens its page",
+      "project": "desktop",
+      "file": "smoke/navigation.spec.ts",
+      "title": "Smoke — Navigation (desktop) › \"Insights\" opens its page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 925
+    },
+    {
+      "key": "desktop › smoke/navigation.spec.ts › Smoke — Navigation (desktop) › unknown URL shows the 404 page",
+      "project": "desktop",
+      "file": "smoke/navigation.spec.ts",
+      "title": "Smoke — Navigation (desktop) › unknown URL shows the 404 page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 515
+    },
+    {
+      "key": "desktop › smoke/not-found.spec.ts › Smoke — Not found › an unknown URL returns a real 404 that search engines skip",
+      "project": "desktop",
+      "file": "smoke/not-found.spec.ts",
+      "title": "Smoke — Not found › an unknown URL returns a real 404 that search engines skip",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 614
+    },
+    {
+      "key": "desktop › smoke/search.spec.ts › Smoke — Search › returns matching results for a known term",
+      "project": "desktop",
+      "file": "smoke/search.spec.ts",
+      "title": "Smoke — Search › returns matching results for a known term",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 663
+    },
+    {
+      "key": "desktop › smoke/search.spec.ts › Smoke — Search › search form submits a new query",
+      "project": "desktop",
+      "file": "smoke/search.spec.ts",
+      "title": "Smoke — Search › search form submits a new query",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1313
+    },
+    {
+      "key": "desktop › smoke/search.spec.ts › Smoke — Search › shows a no-results message for an unknown term",
+      "project": "desktop",
+      "file": "smoke/search.spec.ts",
+      "title": "Smoke — Search › shows a no-results message for an unknown term",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 721
+    },
+    {
+      "key": "desktop › smoke/search.spec.ts › Smoke — Search › lists each result only once",
+      "project": "desktop",
+      "file": "smoke/search.spec.ts",
+      "title": "Smoke — Search › lists each result only once",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 800
+    },
+    {
+      "key": "desktop › smoke/search.spec.ts › Smoke — Search › shows markup in a query as text",
+      "project": "desktop",
+      "file": "smoke/search.spec.ts",
+      "title": "Smoke — Search › shows markup in a query as text",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 805
+    },
+    {
+      "key": "desktop › smoke/search.spec.ts › Smoke — Search › shows a script-like query as text instead of running it",
+      "project": "desktop",
+      "file": "smoke/search.spec.ts",
+      "title": "Smoke — Search › shows a script-like query as text instead of running it",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 204
+    },
+    {
+      "key": "desktop › smoke/search.spec.ts › Smoke — Search › results show short excerpts, not full page content",
+      "project": "desktop",
+      "file": "smoke/search.spec.ts",
+      "title": "Smoke — Search › results show short excerpts, not full page content",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 667
+    },
+    {
+      "key": "desktop › smoke/search.spec.ts › Smoke — Search › article page offers a search box",
+      "project": "desktop",
+      "file": "smoke/search.spec.ts",
+      "title": "Smoke — Search › article page offers a search box",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 729
+    },
+    {
+      "key": "desktop › smoke/search.spec.ts › Smoke — Search › home page offers a search box",
+      "project": "desktop",
+      "file": "smoke/search.spec.ts",
+      "title": "Smoke — Search › home page offers a search box",
+      "outcome": "known-defect",
+      "finding": "FINDINGS #11: no search UI on the home page",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('search')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('search') with timeout 5000ms\n  - waiting for getByRole('search')",
+      "attachments": [
+        "test-results/smoke-search-Smoke-—-Search-home-page-offers-a-search-box-desktop/error-context.md"
+      ],
+      "durationMs": 5701
+    },
+    {
+      "key": "desktop › visual.spec.ts › Visual — Home › above-the-fold hero matches the baseline",
+      "project": "desktop",
+      "file": "visual.spec.ts",
+      "title": "Visual — Home › above-the-fold hero matches the baseline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1028
+    },
+    {
+      "key": "desktop › visual.spec.ts › Visual — Components › header navigation matches the baseline",
+      "project": "desktop",
+      "file": "visual.spec.ts",
+      "title": "Visual — Components › header navigation matches the baseline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 915
+    },
+    {
+      "key": "desktop › visual.spec.ts › Visual — Components › open Services menu matches the baseline",
+      "project": "desktop",
+      "file": "visual.spec.ts",
+      "title": "Visual — Components › open Services menu matches the baseline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 741
+    },
+    {
+      "key": "desktop › visual.spec.ts › Visual — Components › contact form matches the baseline",
+      "project": "desktop",
+      "file": "visual.spec.ts",
+      "title": "Visual — Components › contact form matches the baseline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 922
+    },
+    {
+      "key": "desktop › visual.spec.ts › Visual — Components › filled-in contact form matches the baseline",
+      "project": "desktop",
+      "file": "visual.spec.ts",
+      "title": "Visual — Components › filled-in contact form matches the baseline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1040
+    },
+    {
+      "key": "desktop › visual.spec.ts › Visual — Article › article above the fold matches the baseline",
+      "project": "desktop",
+      "file": "visual.spec.ts",
+      "title": "Visual — Article › article above the fold matches the baseline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 804
+    },
+    {
+      "key": "desktop › visual.spec.ts › Visual — Tablet breakpoint › home above the fold at 768px matches the baseline",
+      "project": "desktop",
+      "file": "visual.spec.ts",
+      "title": "Visual — Tablet breakpoint › home above the fold at 768px matches the baseline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 878
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Home: no horizontal scroll",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Home: no horizontal scroll",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 2936
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Home: reflows without horizontal scroll at every breakpoint",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Home: reflows without horizontal scroll at every breakpoint",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 2050
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Home: touch targets are at least 24×24 px (WCAG 2.5.8)",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Home: touch targets are at least 24×24 px (WCAG 2.5.8)",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1057
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Article: Independent Hotels: no horizontal scroll",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Article: Independent Hotels: no horizontal scroll",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1912
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Article: Independent Hotels: reflows without horizontal scroll at every breakpoint",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Article: Independent Hotels: reflows without horizontal scroll at every breakpoint",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 2040
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Article: Independent Hotels: touch targets are at least 24×24 px (WCAG 2.5.8)",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Article: Independent Hotels: touch targets are at least 24×24 px (WCAG 2.5.8)",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 847
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Contact: no horizontal scroll",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Contact: no horizontal scroll",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1162
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Contact: reflows without horizontal scroll at every breakpoint",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Contact: reflows without horizontal scroll at every breakpoint",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1933
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Contact: touch targets are at least 24×24 px (WCAG 2.5.8)",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Contact: touch targets are at least 24×24 px (WCAG 2.5.8)",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 941
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Contact form › every field fits the screen",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Contact form › every field fits the screen",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 643
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Contact form › text fields use at least 16px text, so focusing them does not zoom the page",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Contact form › text fields use at least 16px text, so focusing them does not zoom the page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 628
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Contact form › fields bring up the right keyboard and autofill",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Contact form › fields bring up the right keyboard and autofill",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 663
+    },
+    {
+      "key": "mobile › mobile.spec.ts › Mobile — Contact form › tapping submit on an empty form shows validation, not a page load",
+      "project": "mobile",
+      "file": "mobile.spec.ts",
+      "title": "Mobile — Contact form › tapping submit on an empty form shows validation, not a page load",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1127
+    },
+    {
+      "key": "mobile › smoke/navigation.mobile.spec.ts › Smoke — Navigation (mobile) › Menu button opens the drawer",
+      "project": "mobile",
+      "file": "smoke/navigation.mobile.spec.ts",
+      "title": "Smoke — Navigation (mobile) › Menu button opens the drawer",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1006
+    },
+    {
+      "key": "mobile › smoke/navigation.mobile.spec.ts › Smoke — Navigation (mobile) › drawer link navigates to Insights",
+      "project": "mobile",
+      "file": "smoke/navigation.mobile.spec.ts",
+      "title": "Smoke — Navigation (mobile) › drawer link navigates to Insights",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 780
+    },
+    {
+      "key": "mobile › visual.mobile.spec.ts › Visual — Mobile › home above the fold matches the baseline",
+      "project": "mobile",
+      "file": "visual.mobile.spec.ts",
+      "title": "Visual — Mobile › home above the fold matches the baseline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1112
+    },
+    {
+      "key": "mobile › visual.mobile.spec.ts › Visual — Mobile › open navigation drawer matches the baseline",
+      "project": "mobile",
+      "file": "visual.mobile.spec.ts",
+      "title": "Visual — Mobile › open navigation drawer matches the baseline",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 570
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts › returns published posts that match the schema",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts › returns published posts that match the schema",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 350
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts › reports the total in headers and fits on one page",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts › reports the total in headers and fits on one page",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 213
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts › finds the sample article by slug",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts › finds the sample article by slug",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 144
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts › returns an empty list for an unknown slug",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts › returns an empty list for an unknown slug",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 143
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts › rejects an out-of-range page size with a JSON 400",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts › rejects an out-of-range page size with a JSON 400",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 124
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts › every published post link loads",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts › every published post link loads",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 411
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts pagination › pages are disjoint and together hold exactly X-WP-Total posts",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts pagination › pages are disjoint and together hold exactly X-WP-Total posts",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 509
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts pagination › Link header points to the next page, and the last page has no next",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts pagination › Link header points to the next page, and the last page has no next",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 281
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts pagination › a page past the end is a JSON 400, not an empty 200",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts pagination › a page past the end is a JSON 400, not an empty 200",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 267
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2/posts pagination › WpApi.allPosts() returns every post exactly once",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2/posts pagination › WpApi.allPosts() returns every post exactly once",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 345
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › rejects per_page=0 with a JSON 400 naming \"per_page\"",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › rejects per_page=0 with a JSON 400 naming \"per_page\"",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 192
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › rejects per_page=abc with a JSON 400 naming \"per_page\"",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › rejects per_page=abc with a JSON 400 naming \"per_page\"",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 260
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › rejects page=0 with a JSON 400 naming \"page\"",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › rejects page=0 with a JSON 400 naming \"page\"",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 211
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › rejects orderby=bogus with a JSON 400 naming \"orderby\"",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › rejects orderby=bogus with a JSON 400 naming \"orderby\"",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 165
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › rejects order=sideways with a JSON 400 naming \"order\"",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › rejects order=sideways with a JSON 400 naming \"order\"",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 194
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › rejects status=draft with a JSON 400 naming \"status\"",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › rejects status=draft with a JSON 400 naming \"status\"",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 188
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › /posts/999999999 is a JSON 404 \"rest_post_invalid_id\" whose body status matches the HTTP status",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › /posts/999999999 is a JSON 404 \"rest_post_invalid_id\" whose body status matches the HTTP status",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 210
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › /zzqx-no-such-route is a JSON 404 \"rest_no_route\" whose body status matches the HTTP status",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › /zzqx-no-such-route is a JSON 404 \"rest_no_route\" whose body status matches the HTTP status",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 5166
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › collections are JSON with integer pagination headers",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › collections are JSON with integer pagination headers",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 145
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › an empty result is [] with X-WP-Total 0",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › an empty result is [] with X-WP-Total 0",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 200
+    },
+    {
+      "key": "api › api/posts.spec.ts › API — wp/v2 contract › a single post matches its entry in the list",
+      "project": "api",
+      "file": "api/posts.spec.ts",
+      "title": "API — wp/v2 contract › a single post matches its entry in the list",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 246
+    },
+    {
+      "key": "api › api/security.spec.ts › API — Security › REST API does not list user accounts publicly",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — Security › REST API does not list user accounts publicly",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 199
+    },
+    {
+      "key": "api › api/security.spec.ts › API — Security › home page sends the baseline security headers",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — Security › home page sends the baseline security headers",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 139
+    },
+    {
+      "key": "api › api/security.spec.ts › API — Security headers on every audited page › HSTS lasts at least a year",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — Security headers on every audited page › HSTS lasts at least a year",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 315
+    },
+    {
+      "key": "api › api/security.spec.ts › API — Security headers on every audited page › every page sends nosniff and framing protection",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — Security headers on every audited page › every page sends nosniff and framing protection",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 332
+    },
+    {
+      "key": "api › api/security.spec.ts › API — Security headers on every audited page › Content-Security-Policy restricts where scripts load from",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — Security headers on every audited page › Content-Security-Policy restricts where scripts load from",
+      "outcome": "known-defect",
+      "finding": "FINDINGS #22: CSP only sets frame-ancestors; no script-src or default-src",
+      "error": "Error: Home: CSP \"frame-ancestors 'self'\" has no script-src or default-src\n\nexpect(received).toBeDefined()\n\nReceived: undefined\nError: Article: Independent Hotels: CSP \"frame-ancestors 'self'\" has no script-src or default-src\n\nexpect(received).toBeDefined()\n\nReceived: undefined\nError: Contact: CSP \"frame-ancestors 'self'\" has no script-src or default-src\n\nexpect(received).toBeDefined()\n\nReceived: undefined",
+      "attachments": [
+        "test-results/api-security-API-—-Securit-ece00-cts-where-scripts-load-from-api/error-context.md"
+      ],
+      "durationMs": 292
+    },
+    {
+      "key": "api › api/security.spec.ts › API — Security headers on every audited page › responses do not advertise server software versions",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — Security headers on every audited page › responses do not advertise server software versions",
+      "outcome": "known-defect",
+      "finding": "FINDINGS #23: X-Powered-By discloses the PHP version",
+      "error": "Error: Home: x-powered-by: PHP/8.3.36\n\nexpect(received).not.toMatch(expected)\n\nExpected pattern: not /\\d+\\.\\d+/\nReceived string:      \"PHP/8.3.36\"\nError: Article: Independent Hotels: x-powered-by: PHP/8.3.36\n\nexpect(received).not.toMatch(expected)\n\nExpected pattern: not /\\d+\\.\\d+/\nReceived string:      \"PHP/8.3.36\"\nError: Contact: x-powered-by: PHP/8.3.36\n\nexpect(received).not.toMatch(expected)\n\nExpected pattern: not /\\d+\\.\\d+/\nReceived string:      \"PHP/8.3.36\"",
+      "attachments": [
+        "test-results/api-security-API-—-Securit-d6b02-se-server-software-versions-api/error-context.md"
+      ],
+      "durationMs": 406
+    },
+    {
+      "key": "api › api/security.spec.ts › API — Security headers on every audited page › cookies are Secure and SameSite; session cookies are HttpOnly",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — Security headers on every audited page › cookies are Secure and SameSite; session cookies are HttpOnly",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 446
+    },
+    {
+      "key": "api › api/security.spec.ts › API — WordPress exposure › the REST index registers no user listing or lookup routes",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — WordPress exposure › the REST index registers no user listing or lookup routes",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 156
+    },
+    {
+      "key": "api › api/security.spec.ts › API — WordPress exposure › /wp-json/wp/v2/users/me refuses anonymous readers",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — WordPress exposure › /wp-json/wp/v2/users/me refuses anonymous readers",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 255
+    },
+    {
+      "key": "api › api/security.spec.ts › API — WordPress exposure › /wp-json/wp/v2/settings refuses anonymous readers",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — WordPress exposure › /wp-json/wp/v2/settings refuses anonymous readers",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 227
+    },
+    {
+      "key": "api › api/security.spec.ts › API — WordPress exposure › /wp-json/wp/v2/plugins refuses anonymous readers",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — WordPress exposure › /wp-json/wp/v2/plugins refuses anonymous readers",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 174
+    },
+    {
+      "key": "api › api/security.spec.ts › API — WordPress exposure › /wp-json/wp/v2/themes refuses anonymous readers",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — WordPress exposure › /wp-json/wp/v2/themes refuses anonymous readers",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 218
+    },
+    {
+      "key": "api › api/security.spec.ts › API — WordPress exposure › /?rest_route=/wp/v2/users refuses anonymous readers",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — WordPress exposure › /?rest_route=/wp/v2/users refuses anonymous readers",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 222
+    },
+    {
+      "key": "api › api/security.spec.ts › API — WordPress exposure › author archives do not reveal an email-derived login (FINDINGS #17 regression)",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — WordPress exposure › author archives do not reveal an email-derived login (FINDINGS #17 regression)",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 174
+    },
+    {
+      "key": "api › api/security.spec.ts › API — Input handling › the 404 page shows markup from the URL as text",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — Input handling › the 404 page shows markup from the URL as text",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 114
+    },
+    {
+      "key": "api › api/security.spec.ts › API — Input handling › REST errors echo hostile parameters as JSON, never as HTML",
+      "project": "api",
+      "file": "api/security.spec.ts",
+      "title": "API — Input handling › REST errors echo hostile parameters as JSON, never as HTML",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 218
+    },
+    {
+      "key": "api › api/site.spec.ts › API — Site › http://uptichospitality.com/ redirects permanently to the canonical https apex",
+      "project": "api",
+      "file": "api/site.spec.ts",
+      "title": "API — Site › http://uptichospitality.com/ redirects permanently to the canonical https apex",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 90
+    },
+    {
+      "key": "api › api/site.spec.ts › API — Site › https://www.uptichospitality.com/ redirects permanently to the canonical https apex",
+      "project": "api",
+      "file": "api/site.spec.ts",
+      "title": "API — Site › https://www.uptichospitality.com/ redirects permanently to the canonical https apex",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 242
+    },
+    {
+      "key": "api › api/site.spec.ts › API — Site › sitemap lists only URLs that load",
+      "project": "api",
+      "file": "api/site.spec.ts",
+      "title": "API — Site › sitemap lists only URLs that load",
+      "outcome": "passed",
+      "attachments": [],
+      "durationMs": 1288
     }
   ]
 }

@@ -2,17 +2,19 @@ import type { Page, Request } from '@playwright/test';
 import type { ImageFacts, Sample } from './stats';
 
 /**
- * One lab measurement of one page load: a cold cache, a throttled "slow phone on 4G" profile
- * (Lighthouse's mobile defaults), Core Web Vitals from the browser's own PerformanceObservers, and
- * every response's size from the network layer.
+ * One lab measurement of one page load: a cold cache, CDP network and CPU throttling (Lighthouse's
+ * mobile figures, but applied per request: connection setup is not slowed), LCP and load-time CLS
+ * from the browser's own PerformanceObservers, and every response's size from the network layer.
  *
- * INP is a lab proxy: real INP needs real users. The probe clicks the page's main heading (inert
- * text, so nothing navigates or submits) and takes the slowest interaction the Event Timing API
- * reports; it catches main-thread jank during load, not slow handlers deep in the UI.
+ * `inpMs` is NOT INP. INP is a field metric over all of a real visitor's interactions. Here one
+ * synthetic click lands on the page's main heading (inert text, so nothing navigates or submits)
+ * after the page has settled, and the longest Event Timing entry is recorded. It shows how busy the
+ * main thread is at that moment; it does not see slow handlers in menus or forms. Event Timing only
+ * reports durations >= 16 ms, so 0 means "under 16 ms or not reported".
  */
 
 export const THROTTLING = {
-  /** Round trip, download and upload of Lighthouse's "Slow 4G". */
+  /** Latency, download and upload figures of Lighthouse's "Slow 4G", applied by CDP per request. */
   latencyMs: 150,
   downloadBytesPerSecond: (1.6 * 1024 * 1024) / 8,
   uploadBytesPerSecond: (750 * 1024) / 8,
@@ -96,7 +98,7 @@ export async function measurePageLoad(page: Page, url: string): Promise<Measurem
       .waitForFunction(() => (window as unknown as { __vitals: { interactions: number } }).__vitals.interactions > 0, undefined, {
         timeout: INTERACTION_REPORT_TIMEOUT_MS,
       })
-      .catch(() => undefined); // a click faster than 16 ms is not reported: INP stays 0
+      .catch(() => undefined); // a click faster than 16 ms is not reported: inpMs stays 0
   }
 
   await Promise.all(pending);
